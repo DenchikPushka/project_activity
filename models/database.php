@@ -77,6 +77,36 @@ class ModelDatabase
 		return $result;
 	}
 
+	public function addEntity($table_id, $data) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("INSERT INTO `db_entities` (`table_id`) VALUES ($table_id)");
+		$entity_id = $mysqli->insert_id;
+
+		$values = '';
+		foreach ($data as $item) {
+			$attr_id = $item->id;
+			$value = $mysqli->real_escape_string(trim($item->value));
+			if (!empty($attr_id) && $value !== '') {
+				if (!empty($values)) {
+					$values .= ", ($attr_id, $entity_id, '$value')";
+				} else {
+					$values .= "($attr_id, $entity_id, '$value')";
+				}
+			}
+		}
+		if (!empty($values)) {
+			$mysqli->real_query("INSERT INTO `db_values` (`attribute_id`, `entity_id`, `value`) VALUES $values");
+		} else {
+			$mysqli->real_query("DELETE FROM `db_entities` WHERE `id` = $entity_id");
+			$entity_id = 0;
+		}
+
+		$mysqli->close();
+
+		return $entity_id;
+	}
+
 	public function getDataFromTable($filter = null) {
 
 	}

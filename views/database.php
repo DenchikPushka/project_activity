@@ -96,10 +96,6 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		var project_id = 
-		jQuery('.tr_table').click(function() {
-			var table_id = this.getAttribute('data-table_id');
-		});
 
 		var elem_add_table = document.getElementById('btn_add_table');
 		if (elem_add_table) {

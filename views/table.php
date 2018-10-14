@@ -44,9 +44,52 @@
 		</tr>
 		<tr>
 			<?php foreach ($attributes as $attr) { ?>
-				<td><input class="form-control" data-db_type="<?= $attr->type_id; ?>" type="text"></td>
+				<td><input class="form-control db_attr_values" data-db_attr_id="<?= $attr->id; ?>" data-db_type="<?= $attr->type_id; ?>" type="text"></td>
 			<?php } ?>
 		</tr>
 	</table>
 	<button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button>
 </div>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+
+		var elem_add_entity = document.getElementById('btn_add_entity');
+		if (elem_add_entity) {
+			elem_add_entity.onclick = function() {
+				var attr_values = jQuery('.db_attr_values'), data = [];
+				for (var i = 0; i < attr_values.length; i++) {
+					data.push({value: attr_values[i].value, id: attr_values[i].getAttribute('data-db_attr_id')});
+				}
+				jQuery.ajax({
+			        type: 'POST',
+			        url: 'index.php?task=database.addEntity',
+			        data: {
+			        	table_id: <?= $table_id; ?>,
+			            data: JSON.stringify(data)
+			        },
+			        success: function(data) {
+			        	//console.log(data);
+			        	if (data !== 0) {
+			        		location.reload();
+			        	}
+			        },
+			        dataType: 'json',
+			        async: true,
+			        timeout: 10000,
+			        error: function(data) {
+			        	console.log(data);
+			            noty({
+			                timeout: 2000,
+			                theme: 'relax',
+			                layout: 'topCenter',
+			                maxVisible: 5,
+			                type: 'error',
+			                text: 'Ошибка!'
+			            });
+			        }
+			    });
+			};
+		}
+
+	});
+</script>
