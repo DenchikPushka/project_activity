@@ -156,8 +156,14 @@
 
 		var elem_add_str_attrib = document.getElementById('btn_add_str_attrib');
 		if (elem_add_str_attrib) {
+			var attrib_count = 0;
 			elem_add_str_attrib.onclick = function() {
-				jQuery('#table_newtable tr:last').after('<tr><td><input class="form-control col_name" type="text"></td><td><select class="form-control col_type"><?= $select_options; ?></select></td><td class="tdcenter"><input class="form-check-input col_notnull" type="checkbox"></td></tr>');
+				if (attrib_count < 9) {
+					jQuery('#table_newtable tr:last').after('<tr><td><input class="form-control col_name" type="text"></td><td><select class="form-control col_type"><?= $select_options; ?></select></td><td class="tdcenter"><input class="form-check-input col_notnull" type="checkbox"></td></tr>');
+					attrib_count++;
+				} else {
+					elem_add_str_attrib.disabled = true;
+				}
 			};
 		}
 	});

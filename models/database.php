@@ -36,7 +36,7 @@ class ModelDatabase
 
 		$values = '';
 		foreach ($data as $item) {
-			$name = trim($item->name);
+			$name = trim($mysqli->real_escape_string($item->name));
 			$type = $item->type;
 			$notnull = (int)$item->notnull;
 			if (!empty($name) && !empty($type)) {

@@ -36,30 +36,52 @@
 <div class="container">
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3><?= $table->name; ?></h3>
-	<table class="table">
-		<tr>
-			<?php foreach ($attributes as $attr) {
-				echo "<th>$attr->name</th>";
-			} ?>
-		</tr>
-		<?php foreach ($db_table as $entity) {
-			echo '<tr>';
-			foreach ($attributes as $attr) {
-				$attr_key = $attr->id;
-				if (array_key_exists($attr_key, $entity)) {
-					echo "<td>$entity[$attr_key]</td>";
-				} else {
-					echo '<td></td>';
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<?php foreach ($attributes as $attr) {
+					echo "<th>$attr->name</th>";
+				} ?>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($db_table as $entity) {
+				echo '<tr>';
+				foreach ($attributes as $attr) {
+					$attr_key = $attr->id;
+					if (array_key_exists($attr_key, $entity)) {
+						echo "<td>$entity[$attr_key]</td>";
+					} else {
+						echo '<td></td>';
+					}
 				}
-				
-			}
-			echo '</tr>';
-		} ?>
-		<tr>
-			<?php foreach ($attributes as $attr) { ?>
-				<td><input class="form-control db_attr_values" data-db_attr_id="<?= $attr->id; ?>" data-db_type="<?= $attr->type_id; ?>" type="text"></td>
-			<?php } ?>
-		</tr>
+				echo '</tr>';
+			} ?>
+		</tbody>
+		<thead>
+			<tr><td colspan="<?= count($attributes); ?>"></td></tr>
+			<tr>
+				<?php foreach ($attributes as $attr) { 
+					switch ($attr->type_id) {
+						case 1:
+					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"></td>";
+					 		break;
+					 	case 2:
+					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\"></td>";
+					 		break;
+					 	case 3:
+					 		echo "<td><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"resize: none;\"></textarea></td>";
+					 		break;
+					 	case 4:
+					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"></td>";
+					 		break;
+					 	case 5:
+					 		echo "<td><input class=\"btn btn-success\" type=\"button\" value=\"Выбрать файл\"></td>";
+					 		break;
+					}
+				} ?>
+			</tr>
+		</thead>
 	</table>
 	<button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button>
 </div>
