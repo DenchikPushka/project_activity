@@ -15,8 +15,7 @@ class ModelDatabase
 	public function getTables($filter = null) {
 		if (empty($filter)) {
 			$filter = '';
-		}
-		else {
+		} else {
 			$filter = 'WHERE '.$filter;
 		}
 		$mysqli = db_connect();
@@ -63,13 +62,12 @@ class ModelDatabase
 	public function getAttributes($filter = null) {
 		if (empty($filter)) {
 			$filter = '';
-		}
-		else {
+		} else {
 			$filter = 'WHERE '.$filter;
 		}
 		$mysqli = db_connect();
 
-		$mysqli->real_query("SELECT * FROM `db_attributes` $filter");
+		$mysqli->real_query("SELECT * FROM `db_attributes` $filter ORDER BY `id`");
 		$result = $mysqli->loadObjectsList();
 
 		$mysqli->close();
@@ -107,8 +105,28 @@ class ModelDatabase
 		return $entity_id;
 	}
 
-	public function getDataFromTable($filter = null) {
+	public function getDataFromTable($table_id, $filter = null) {
+		if (empty($filter)) {
+			$filter = '';
+		} else {
+			$filter = 'WHERE '.$filter;
+		}
+		$mysqli = db_connect();
 
+		$mysqli->real_query("SELECT `v`.* FROM `db_values` AS `v`
+			INNER JOIN `db_attributes` AS `a` ON `a`.`id` = `v`.`attribute_id`
+			INNER JOIN `db_tables` AS `t` ON `t`.`id` = `a`.`table_id`
+			WHERE `t`.`id` = $table_id $filter");
+		$result = $mysqli->loadObjectsList();
+
+		$mysqli->close();
+
+		$result_array = array();
+		foreach ($result as $item) {
+			$result_array[$item->entity_id][$item->attribute_id] = $item->value;
+		}
+
+		return $result_array;
 	}
 
 }

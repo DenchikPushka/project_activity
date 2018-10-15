@@ -31,17 +31,30 @@
 	}
 
 	$attributes = $model_database->getAttributes("`table_id` = $table_id");
-	//$db_table = $model_database->getDataFromTable();
+	$db_table = $model_database->getDataFromTable($table_id);
 ?>
 <div class="container">
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3><?= $table->name; ?></h3>
 	<table class="table">
 		<tr>
-			<?php foreach ($attributes as $attr) { ?>
-				<td><?= $attr->name; ?></td>
-			<?php } ?>
+			<?php foreach ($attributes as $attr) {
+				echo "<th>$attr->name</th>";
+			} ?>
 		</tr>
+		<?php foreach ($db_table as $entity) {
+			echo '<tr>';
+			foreach ($attributes as $attr) {
+				$attr_key = $attr->id;
+				if (array_key_exists($attr_key, $entity)) {
+					echo "<td>$entity[$attr_key]</td>";
+				} else {
+					echo '<td></td>';
+				}
+				
+			}
+			echo '</tr>';
+		} ?>
 		<tr>
 			<?php foreach ($attributes as $attr) { ?>
 				<td><input class="form-control db_attr_values" data-db_attr_id="<?= $attr->id; ?>" data-db_type="<?= $attr->type_id; ?>" type="text"></td>
