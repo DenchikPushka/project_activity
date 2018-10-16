@@ -76,7 +76,10 @@
 					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"></td>";
 					 		break;
 					 	case 5:
-					 		echo "<td><input class=\"btn btn-success\" type=\"button\" value=\"Выбрать файл\"></td>";
+					 		echo "<td><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\">
+					 			<input class=\"btn btn-success db_file_button\" data-db_attr_id=\"$attr->id\" type=\"button\" value=\"Выбрать файл\">
+					 			<label class=\"db_file_label\" data-db_attr_id=\"$attr->id\"></label>
+					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\"></td>";
 					 		break;
 					}
 				} ?>
@@ -88,6 +91,19 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 
+		jQuery('.db_file_button').click(function() {
+			var attr_id = this.getAttribute('data-db_attr_id');
+		    jQuery('input[type=file][data-db_attr_id='+attr_id+']')[0].click();
+		});
+
+		jQuery('input[type=file]').change(function() {
+			var attr_id = this.getAttribute('data-db_attr_id');
+		    if (this.files.length === 1) {
+		    	jQuery('.db_file[data-db_attr_id='+attr_id+']')[0].value = this.files[0].name;
+		    	jQuery('.db_file_label[data-db_attr_id='+attr_id+']')[0].innerHTML = this.files[0].name;
+		    }
+		});
+
 		var elem_add_entity = document.getElementById('btn_add_entity');
 		if (elem_add_entity) {
 			elem_add_entity.onclick = function() {
@@ -95,13 +111,31 @@
 				for (var i = 0; i < attr_values.length; i++) {
 					data.push({value: attr_values[i].value, id: attr_values[i].getAttribute('data-db_attr_id')});
 				}
+
+				var files = [],
+					inputs_files = jQuery('input[type=file]');
+				for (var i = inputs_files.length; i--;) {
+					if (inputs_files[i].files.length === 1) {
+						files.push(inputs_files[i].files[0]);
+					}
+				}
+
+				var formdata = new FormData();
+			    jQuery.each(files, function(key, value) {
+			        formdata.append(key, value);
+			    });
+			    formdata.append('table_id', <?= $table_id; ?>);
+			    formdata.append('data', JSON.stringify(data));
+			    /*for (var key of formdata.entries()) {
+			    	console.log(key[0]+', '+key[1]);
+			    }*/
 				jQuery.ajax({
 			        type: 'POST',
 			        url: 'index.php?task=database.addEntity',
-			        data: {
-			        	table_id: <?= $table_id; ?>,
-			            data: JSON.stringify(data)
-			        },
+			        cache: false,
+			        processData: false, // Не обрабатываем файлы (Don't process the files)
+        			contentType: false, // Так jQuery скажет серверу что это строковой запрос
+			        data: formdata,
 			        success: function(data) {
 			        	//console.log(data);
 			        	if (data !== 0) {

@@ -116,7 +116,7 @@ class ModelDatabase
 		$mysqli->real_query("SELECT `v`.* FROM `db_values` AS `v`
 			INNER JOIN `db_attributes` AS `a` ON `a`.`id` = `v`.`attribute_id`
 			INNER JOIN `db_tables` AS `t` ON `t`.`id` = `a`.`table_id`
-			WHERE `t`.`id` = $table_id $filter");
+			WHERE `t`.`id` = $table_id $filter ORDER BY `v`.`entity_id`");
 		$result = $mysqli->loadObjectsList();
 
 		$mysqli->close();

@@ -1,0 +1,13 @@
+
+
+<!-- Пиксель для ВК -->
+<script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = 'https://vk.com/rtrg?p=VK-RTRG-202895-2HXyV';</script>
+<!-- -->
+
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?151"></script>
+
+<!-- VK Widget -->
+<div id="vk_community_messages"></div>
+<script type="text/javascript">
+VK.Widgets.CommunityMessages("vk_community_messages", 81325002, {expandTimeout: "5000",tooltipButtonText: "Есть вопрос?"});
+</script>

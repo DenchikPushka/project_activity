@@ -1,0 +1,9 @@
+var e = new Event("keydown");
+  e.keyCode=38;
+  e.which=e.keyCode;
+  e.altKey=false;
+  e.ctrlKey=false;
+  e.shiftKey=false;
+  e.metaKey=false;
+  e.bubbles=true;
+  window.dispatchEvent(e);
