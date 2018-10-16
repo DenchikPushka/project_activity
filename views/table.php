@@ -50,7 +50,14 @@
 				foreach ($attributes as $attr) {
 					$attr_key = $attr->id;
 					if (array_key_exists($attr_key, $entity)) {
-						echo "<td>$entity[$attr_key]</td>";
+						if ($attr->type_id == 5) {
+							$file = explode('|', $entity[$attr_key]);
+							echo "<td><a href=\"uploads/$file[0]\" download=\"$file[1]\">$file[1]</a></td>";
+						} elseif ($attr->type_id == 3) {
+							echo "<td><textarea class=\"form-control\" style=\"resize: none;\" readonly>$entity[$attr_key]</textarea></td>";
+						} else {
+							echo "<td>$entity[$attr_key]</td>";
+						}
 					} else {
 						echo '<td></td>';
 					}
@@ -61,25 +68,29 @@
 		<thead>
 			<tr><td colspan="<?= count($attributes); ?>"></td></tr>
 			<tr>
-				<?php foreach ($attributes as $attr) { 
+				<?php foreach ($attributes as $attr) {
+					$important = '';
+					if ($attr->not_null == 1) {
+						$important = '<br>(обязательно для заполнения)';
+					}
 					switch ($attr->type_id) {
 						case 1:
-					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"></td>";
+					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</td>";
 					 		break;
 					 	case 2:
-					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\"></td>";
+					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\">$important</td>";
 					 		break;
 					 	case 3:
-					 		echo "<td><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"resize: none;\"></textarea></td>";
+					 		echo "<td><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"resize: none;\"></textarea>$important</td>";
 					 		break;
 					 	case 4:
-					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"></td>";
+					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</td>";
 					 		break;
 					 	case 5:
 					 		echo "<td><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\">
 					 			<input class=\"btn btn-success db_file_button\" data-db_attr_id=\"$attr->id\" type=\"button\" value=\"Выбрать файл\">
 					 			<label class=\"db_file_label\" data-db_attr_id=\"$attr->id\"></label>
-					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\"></td>";
+					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\">$important</td>";
 					 		break;
 					}
 				} ?>
@@ -138,7 +149,16 @@
 			        data: formdata,
 			        success: function(data) {
 			        	//console.log(data);
-			        	if (data !== 0) {
+			        	if (data == 'Empty value') {
+			        		noty({
+				                timeout: 4000,
+				                theme: 'relax',
+				                layout: 'topCenter',
+				                maxVisible: 5,
+				                type: 'warning',
+				                text: 'Не заполнено поле, обязательное для заполнения'
+				            });
+			        	} else if (data !== 0) {
 			        		location.reload();
 			        	}
 			        },

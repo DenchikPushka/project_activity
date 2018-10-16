@@ -37,16 +37,40 @@ class ControllerDatabase
 			foreach ($data as $key => $item) {
 				$attr_id = $item->id;
 				$value = trim($item->value);
-				if (!empty($attr_id) && $value !== '') {
-					$attr = $model_database->getAttributes("`id` = $attr_id")[0];
-					if ($attr->type_id == 5) {
-						foreach ($files as $file) {
-							if ($file->name == $value) {
-								$data[$key]->value .= ' | '.$file->md5;
-								break;
+				if (empty($attr_id)) {
+					continue;
+				}
+				$attr = $model_database->getAttributes("`id` = $attr_id")[0];
+				if (empty($attr)) {
+					throw new Exception('Unknown attribute', 500);
+				}
+				if ($value !== '') {
+					switch ($attr->type_id) {
+						case 1:
+							$data[$key]->value = (int)$item->value;
+							break;
+						case 2:
+							$data[$key]->value = (string)$item->value;
+							break;
+						case 3:
+							break;
+						case 4:
+							$data[$key]->value = (float)$item->value;
+							break;
+						case 5:
+							foreach ($files as $file) {
+								if ($file->name == $value) {
+									$data[$key]->value = $file->md5.'|'.$item->value;
+									break;
+								}
 							}
-						}
+							break;
+						default:
+							throw new Exception('Invalid data type', 500);
+							break;
 					}
+				} elseif ($attr->not_null == 1) {
+					die(json_encode('Empty value'));
 				}
 			}
 			
