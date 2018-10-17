@@ -35,38 +35,32 @@
 ?>
 <style type="text/css">
 	table {
-                border-collapse: collapse;
-                border: 1px solid black;
-            }
-
-            tbody, thead, tfoot, tr {
-                display: block;
-            }
-
-            td, th {
-            	padding: 5px 10px;
-                display: inline-block;
-                width: <?= (int)(100/count($attributes)); ?>%;
-                vertical-align: top;
-            }
-
-            thead {
-                border-bottom: 1px solid black;
-            }
-
-            tbody {
-                max-height: 400px;
-                overflow-x: hidden;
-                overflow-y: auto;
-            }
-
-            tbody tr {
-                border-bottom: 1px dashed darkgray;
-            }
-
-            tfoot {
-                border-top: 1px solid black;
-            }
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+    tbody, thead, tfoot, tr {
+        display: block;
+    }
+    td, th {
+    	padding: 5px 10px;
+        display: inline-block;
+        width: <?= (int)(100/count($attributes)); ?>%;
+        vertical-align: top;
+    }
+    thead {
+        border-bottom: 1px solid black;
+    }
+    tbody {
+        max-height: 400px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    tbody tr {
+        border-bottom: 1px dashed darkgray;
+    }
+    tfoot {
+        border-top: 1px solid black;
+    }
 </style>
 <div class="container">
 	<center><h2><?= $project->name; ?></h2></center>
