@@ -33,10 +33,45 @@
 	$attributes = $model_database->getAttributes("`table_id` = $table_id");
 	$db_table = $model_database->getDataFromTable($table_id);
 ?>
+<style type="text/css">
+	table {
+                border-collapse: collapse;
+                border: 1px solid black;
+            }
+
+            tbody, thead, tfoot, tr {
+                display: block;
+            }
+
+            td, th {
+            	padding: 5px 10px;
+                display: inline-block;
+                width: <?= (int)(100/count($attributes)); ?>%;
+                vertical-align: top;
+            }
+
+            thead {
+                border-bottom: 1px solid black;
+            }
+
+            tbody {
+                max-height: 400px;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            tbody tr {
+                border-bottom: 1px dashed darkgray;
+            }
+
+            tfoot {
+                border-top: 1px solid black;
+            }
+</style>
 <div class="container">
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3><?= $table->name; ?></h3>
-	<table class="table table-bordered table-hover">
+	<table class="" style="width: 100%;">
 		<thead>
 			<tr>
 				<?php foreach ($attributes as $attr) {
@@ -54,7 +89,7 @@
 							$file = explode('|', $entity[$attr_key]);
 							echo "<td><a href=\"uploads/$file[0]\" download=\"$file[1]\">$file[1]</a></td>";
 						} elseif ($attr->type_id == 3) {
-							echo "<td><textarea class=\"form-control\" style=\"resize: none;\" readonly>$entity[$attr_key]</textarea></td>";
+							echo "<td><textarea class=\"form-control\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$entity[$attr_key]</textarea></td>";
 						} else {
 							echo "<td>$entity[$attr_key]</td>";
 						}
@@ -65,13 +100,12 @@
 				echo '</tr>';
 			} ?>
 		</tbody>
-		<thead>
-			<tr><td colspan="<?= count($attributes); ?>"></td></tr>
+		<tfoot>
 			<tr>
 				<?php foreach ($attributes as $attr) {
 					$important = '';
 					if ($attr->not_null == 1) {
-						$important = '<br>(обязательно для заполнения)';
+						$important = '<label>(обязательное поле)</label>';
 					}
 					switch ($attr->type_id) {
 						case 1:
@@ -95,12 +129,30 @@
 					}
 				} ?>
 			</tr>
-		</thead>
+			<tr><td><button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button></td></tr>
+		</tfoot>
 	</table>
-	<button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button>
+	
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+		///////////////////////////////////////////////////////////
+		var $table = jQuery('table'),
+		    $bodyCells = $table.find('tbody tr:first').children(),
+		    colWidth;
+		// Get the tbody columns width array
+		colWidth = $bodyCells.map(function() {
+		    return jQuery(this).width();
+		}).get();
+		// Set the width of thead columns
+		$table.find('thead tr').children().each(function(i, v) {
+		    jQuery(v).width(colWidth[i]);
+		});
+		$table.find('tfoot tr').children().each(function(i, v) {
+		    jQuery(v).width(colWidth[i]);
+		});
+		jQuery(window).resize(function() {}).resize();
+		///////////////////////////////////////////////////////////
 
 		jQuery('.db_file_button').click(function() {
 			var attr_id = this.getAttribute('data-db_attr_id');

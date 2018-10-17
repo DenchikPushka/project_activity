@@ -21,8 +21,8 @@
 <div class="container">
 	<center><h2>Авторизация</h2></center>
 	<div style="margin: 10px auto; width: 200px;">
-		<p>Логин*<br><input type="text" name="username" id="username" style="width: 100%;"></p>
-		<p>Пароль*<br><input type="password" name="password" id="password" style="width: 100%;"></p>
+		<p>Логин*<br><input class="form-control" type="text" name="username" id="username" style="width: 100%;"></p>
+		<p>Пароль*<br><input class="form-control" type="password" name="password" id="password" style="width: 100%;"></p>
 		<center><button class="btn btn-success" id="enter">Войти</button></center>
 	</div>
 </div>
