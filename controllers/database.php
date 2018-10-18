@@ -22,6 +22,10 @@ class ControllerDatabase
 			$data = json_decode($_POST['data']);
 
 			$user = getUser();
+			if (empty($user)) {
+				throw new Exception('Forbidden', 403);
+			}
+
 			$files = array();
 			foreach ($_FILES as $file) {
 				$md5 = md5($user->id.microtime().$file['name'].rand(1, 10000));
@@ -74,7 +78,7 @@ class ControllerDatabase
 				}
 			}
 			
-			$entity_id = $model_database->addEntity($table_id, $data);
+			$entity_id = $model_database->addEntity($table_id, $data, $user->id);
 
 			die(json_encode($entity_id));
 		} else {

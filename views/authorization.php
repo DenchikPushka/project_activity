@@ -84,7 +84,7 @@
 			            }
 			            else {
 			            	if (data.user_type == 1) {
-				                location.href = 'index.php?view=projects';
+				                location.href = 'index.php?view=projects_kid';
 				            }
 				            else if (data.user_type == 2) {
 				            	location.href = 'index.php?view=projects_teacher';

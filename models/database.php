@@ -75,10 +75,10 @@ class ModelDatabase
 		return $result;
 	}
 
-	public function addEntity($table_id, $data) {
+	public function addEntity($table_id, $data, $user_id) {
 		$mysqli = db_connect();
 
-		$mysqli->real_query("INSERT INTO `db_entities` (`table_id`) VALUES ($table_id)");
+		$mysqli->real_query("INSERT INTO `db_entities` (`table_id`, `creator_id`) VALUES ($table_id, $user_id)");
 		$entity_id = $mysqli->insert_id;
 
 		$values = '';

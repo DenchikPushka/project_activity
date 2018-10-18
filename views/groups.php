@@ -26,8 +26,13 @@
 	$users_of_groups = $model_groups->getUsersAndGroupsByProjectId($proj_id);
 ?>
 <div class="container">
+	<div class="modal_container">
+		<div class="modal_window">
+
+		</div>
+	</div>
 	<center><h2><?= $project->name; ?></h2></center>
-	<h3>Группы</h3>
+	<h3>Группы <button class="btn btn-success" id="btn_add_group">Создать группу <i class="fas fa-plus"></i></button></h3>
 	<table class="table table-hover">
 		<tbody>
 		<?php foreach ($groups as $group) { ?>
@@ -44,6 +49,13 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+		var elem_add_group = document.getElementById('btn_add_group');
+		if (elem_add_group) {
+			elem_add_group.onclick = function() {
+				jQuery('.modal_container').show();
+			};
+		}
+
 		jQuery('.tr_group').click(function() {
 			var group_id = this.getAttribute('data-group_id');
 			var elems = jQuery('.tr_user_of_group[data-group_id="'+group_id+'"]');
