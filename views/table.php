@@ -44,8 +44,11 @@
     td, th {
     	padding: 5px 10px;
         display: inline-block;
-        width: <?= (int)(100/count($attributes)); ?>%;
+        width: calc(<?= (int)(100/(count($attributes))); ?>% - <?= (int)(60/(count($attributes))); ?>px);
         vertical-align: top;
+    }
+    td {
+        overflow: auto;
     }
     thead {
         border-bottom: 1px solid black;
@@ -63,6 +66,10 @@
     }
 </style>
 <div class="container">
+	<div class="modal_container">
+		<div class="modal_window">
+		</div>
+	</div>
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3><?= $table->name; ?></h3>
 	<table class="" style="width: 100%;">
@@ -71,11 +78,12 @@
 				<?php foreach ($attributes as $attr) {
 					echo "<th>$attr->name</th>";
 				} ?>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($db_table as $entity) {
-				echo '<tr>';
+			<?php foreach ($db_table as $key => $entity) {
+				echo "<tr data-entity_id=\"$key\">";
 				foreach ($attributes as $attr) {
 					$attr_key = $attr->id;
 					if (array_key_exists($attr_key, $entity)) {
@@ -91,6 +99,7 @@
 						echo '<td></td>';
 					}
 				}
+				echo "<td style=\"width: 60px; text-align: right;\"><button class=\"btn btn-danger btn_delete_entity\" data-entity_id=\"$key\"><i class=\"fas fa-trash-alt\"></i></button></td>";
 				echo '</tr>';
 			} ?>
 		</tbody>
@@ -103,50 +112,56 @@
 					}
 					switch ($attr->type_id) {
 						case 1:
-					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</td>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</th>";
 					 		break;
 					 	case 2:
-					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\">$important</td>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\">$important</th>";
 					 		break;
 					 	case 3:
-					 		echo "<td><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"resize: none;\"></textarea>$important</td>";
+					 		echo "<th><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"resize: none;\"></textarea>$important</th>";
 					 		break;
 					 	case 4:
-					 		echo "<td><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</td>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</th>";
 					 		break;
 					 	case 5:
-					 		echo "<td><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\">
-					 			<input class=\"btn btn-success db_file_button\" data-db_attr_id=\"$attr->id\" type=\"button\" value=\"Выбрать файл\">
+					 		echo "<th><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\">
+					 			<button class=\"btn btn-success db_file_button\" data-db_attr_id=\"$attr->id\"><i class=\"fas fa-upload\"></i></button>
 					 			<label class=\"db_file_label\" data-db_attr_id=\"$attr->id\"></label>
-					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\">$important</td>";
+					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\">$important</th>";
 					 		break;
 					}
 				} ?>
+				<th></th>
 			</tr>
-			<tr><td><button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button></td></tr>
+			<tr><th><button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button></th></tr>
 		</tfoot>
 	</table>
-	
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		///////////////////////////////////////////////////////////
-		var $table = jQuery('table'),
-		    $bodyCells = $table.find('tbody tr:first').children(),
-		    colWidth;
-		// Get the tbody columns width array
-		colWidth = $bodyCells.map(function() {
-		    return jQuery(this).width();
-		}).get();
-		// Set the width of thead columns
-		$table.find('thead tr').children().each(function(i, v) {
-		    jQuery(v).width(colWidth[i]);
-		});
-		$table.find('tfoot tr').children().each(function(i, v) {
-		    jQuery(v).width(colWidth[i]);
-		});
-		jQuery(window).resize(function() {}).resize();
+		jQuery(window).resize(function() {
+			var $table = jQuery('table'),
+			    $bodyCells = $table.find('tbody tr:first').children(),
+			    colWidth;
+			// Get the tbody columns width array
+			colWidth = $bodyCells.map(function() {
+			    return jQuery(this).width();
+			}).get();
+			// Set the width of thead columns
+			$table.find('thead tr').children().each(function(i, v) {
+			    jQuery(v).width(colWidth[i]);
+			});
+			$table.find('tfoot tr').children().each(function(i, v) {
+			    jQuery(v).width(colWidth[i]);
+			});
+		}).resize();
 		///////////////////////////////////////////////////////////
+
+		jQuery('.btn_delete_entity').click(function() {
+			var entity_id = this.getAttribute('data-entity_id');
+			console.log(entity_id);
+		});
 
 		jQuery('.db_file_button').click(function() {
 			var attr_id = this.getAttribute('data-db_attr_id');
