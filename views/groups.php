@@ -24,11 +24,30 @@
 	$model_groups = getModel('groups');
 	$groups = $model_groups->getData("`project_id` = $proj_id");
 	$users_of_groups = $model_groups->getUsersAndGroupsByProjectId($proj_id);
+
+	$model_users = getModel('users');
+	$kids = $model_users->getKids();
 ?>
 <div class="container">
 	<div class="modal_container">
 		<div class="modal_window">
-
+			<label for="group_name">Имя группы:</label><input class="form-control" id="group_name" type="text">
+			<div style="min-width: 200px; height: 360px; overflow-y: auto; padding: 10px 10px; border: 1px solid black; border-radius: 4px;">
+			<?php
+				$class_name; 
+				foreach ($kids as $kid) {
+					if (!empty($class_name) && $class_name != $kid->class_name) {
+						echo '<hr style="margin: 5px;">';
+					}
+			?>
+				<input type="checkbox" class="form-check-input kids_check" data-kid_id="<?= $kid->user_id; ?>"> <label> <?= $kid->class_name.' '.$kid->user_name; ?></label><br>
+			<?php
+					$class_name = $kid->class_name;
+				}
+			?>
+			</div><br>
+			<center><button class="btn btn-success" id="btn_save_group">Сохранить <i class="fas fa-save"></i></button>
+				<button class="btn btn-danger" id="btn_cancel_group">Отменить <i class="fas fa-undo"></i></button></center>
 		</div>
 	</div>
 	<center><h2><?= $project->name; ?></h2></center>
@@ -54,6 +73,80 @@
 			elem_add_group.onclick = function() {
 				jQuery('.modal_container').show();
 			};
+		}
+
+		var elem_save_group = document.getElementById('btn_save_group');
+		if (elem_save_group) {
+			elem_save_group.onclick = saveGroup;
+		}
+
+		var elem_cancel_group = document.getElementById('btn_cancel_group');
+		if (elem_cancel_group) {
+			elem_cancel_group.onclick = function() {
+				jQuery('.modal_container').hide();
+			};
+		}
+
+		function saveGroup() {
+			if (document.getElementById('group_name').value.trim() === '') {
+				noty({
+	                timeout: 2000,
+	                theme: 'relax',
+	                layout: 'topCenter',
+	                maxVisible: 5,
+	                type: 'warning',
+	                text: 'Пустое имя группы'
+	            });
+	            document.getElementById('group_name').focus();
+				return;
+			}
+
+			var kids_check = jQuery('.kids_check'),
+				data = [];
+			for (var i = 0; i < kids_check.length; i++) {
+				if (kids_check[i].checked) {
+					data.push(kids_check[i].getAttribute('data-kid_id')-0);
+				}
+			}
+			console.log(data);
+			jQuery.ajax({
+		        type: 'POST',
+		        url: 'index.php?task=groups.addNewGroup',
+		        data: {
+		            data: JSON.stringify(data),
+		            name: document.getElementById('group_name').value,
+		            project_id: <?= $proj_id; ?>
+		        },
+		        success: function(data) {
+		        	//console.log(data);
+		        	if (data !== 0) {
+		        		location.reload();
+		        	} else {
+		        		noty({
+			                timeout: 2000,
+			                theme: 'relax',
+			                layout: 'topCenter',
+			                maxVisible: 5,
+			                type: 'warning',
+			                text: 'Группа не создана, убедитесь что ученики выбранны'
+			            });
+		        	}
+		        },
+		        dataType: 'json',
+		        async: true,
+		        timeout: 10000,
+		        error: function(data) {
+		        	console.log(data);
+		            noty({
+		                timeout: 2000,
+		                theme: 'relax',
+		                layout: 'topCenter',
+		                maxVisible: 5,
+		                type: 'error',
+		                text: 'Ошибка!'
+		            });
+		        }
+		    });
 		}
 
 		jQuery('.tr_group').click(function() {

@@ -33,5 +33,35 @@ class ModelGroups
 
 		return $result;
 	}
+
+	public function addNewGroup($project_id, $name, $data) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("INSERT INTO `groups` (`name`, `project_id`) VALUES ('$name', $project_id)");
+		$group_id = $mysqli->insert_id;
+
+		$values = '';
+		foreach ($data as $user_id) {
+			$user_id = trim($mysqli->real_escape_string($user_id));
+			if (!empty($user_id)) {
+				if (!empty($values)) {
+					$values .= ", ($user_id, $group_id)";
+				} else {
+					$values .= "($user_id, $group_id)";
+				}
+			}
+		}
+		if (!empty($values)) {
+			$mysqli->real_query("INSERT INTO `groups_map` (`user_id`, `group_id`) VALUES $values");
+		} else {
+			$mysqli->real_query("DELETE FROM `groups` WHERE `id` = $group_id");
+			$group_id = 0;
+		}
+
+		$mysqli->close();
+
+		return $group_id;
+	}
+
 }
 ?>
