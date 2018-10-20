@@ -31,8 +31,8 @@
 <div class="container">
 	<div class="modal_container">
 		<div class="modal_window">
-			<label for="group_name">Имя группы:</label><input class="form-control" id="group_name" type="text">
-			<div style="min-width: 200px; height: 360px; overflow-y: auto; padding: 10px 10px; border: 1px solid black; border-radius: 4px;">
+			<label for="group_name">Имя группы:</label><input class="form-control" id="group_name" type="text"><br>
+			<div style="min-width: 280px; height: 360px; overflow-y: auto; padding: 10px 10px; border: 1px solid black; border-radius: 4px;">
 			<?php
 				$class_name; 
 				foreach ($kids as $kid) {
@@ -55,10 +55,10 @@
 	<table class="table table-hover">
 		<tbody>
 		<?php foreach ($groups as $group) { ?>
-			<tr class="tr_group" data-group_id="<?= $group->id ?>"><th colspan="2"><?= $group->name ?> <i class="fas fa-angle-right"></i></th></tr>
+			<tr class="tr_group" data-group_id="<?= $group->id ?>"><th colspan="2"><?= $group->name; ?> <i class="fas fa-angle-right"></i></th></tr>
 			<?php foreach ($users_of_groups as $item) {
 					if ($item->group_id == $group->id) { ?>
-						<tr class="tr_user_of_group" data-group_id="<?= $group->id ?>" style="display: none;"><td><?= $item->name ?></td><td><?= $item->classname ?></td></tr>
+						<tr class="tr_user_of_group" data-group_id="<?= $group->id ?>" style="display: none;"><td><?= $item->name; ?></td><td><?= $item->classname; ?></td></tr>
 				<?php }
 				}
 			}

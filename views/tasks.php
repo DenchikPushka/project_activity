@@ -31,8 +31,9 @@
 <div class="container">
 	<div class="modal_container">
 		<div class="modal_window">
-			<label for="task_name">Название:</label><input class="form-control" id="task_name" type="text">
-			<div style="min-width: 200px; height: 360px; overflow-y: auto; padding: 10px 10px; border: 1px solid black; border-radius: 4px;">
+			<label for="task_name">Название:</label><input class="form-control" id="task_name" type="text"><br>
+			<label for="task_description">Описание:</label><textarea class="form-control" id="task_description" style="resize: none;"></textarea><br>
+			<div style="min-width: 280px; height: 260px; overflow-y: auto; padding: 10px 10px; border: 1px solid black; border-radius: 4px;">
 			<?php foreach ($groups as $group) { ?>
 				<input type="checkbox" class="form-check-input groups_check" data-group_id="<?= $group->id; ?>"> <label> <?= $group->name; ?></label><br>
 			<?php } ?>
@@ -46,10 +47,10 @@
 	<table class="table table-hover">
 		<tbody>
 		<?php foreach ($tasks as $task) { ?>
-			<tr class="tr_task" data-task_id="<?= $task->id ?>"><th><?= $task->name ?> <i class="fas fa-angle-right"></i></th></tr>
+			<tr class="tr_task" data-task_id="<?= $task->id ?>"><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th><textarea class="form-control" style="resize: none; cursor: pointer; background: white;" readonly><?= $task->description; ?></textarea></th></tr>
 			<?php foreach ($groups_of_tasks as $item) {
 					if ($item->task_id == $task->id) { ?>
-						<tr class="tr_groups_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td><?= $item->group_name ?></td></tr>
+						<tr class="tr_groups_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="2"><?= $item->group_name; ?></td></tr>
 				<?php }
 				}
 			}
@@ -106,6 +107,7 @@
 		        data: {
 		            data: JSON.stringify(data),
 		            name: document.getElementById('task_name').value,
+		            description: document.getElementById('task_description').innerHTML,
 		            project_id: <?= $proj_id; ?>
 		        },
 		        success: function(data) {
