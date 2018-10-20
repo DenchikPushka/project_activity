@@ -24,7 +24,7 @@ class ModelProjects
 		$mysqli->real_query("SELECT `p`.`id`, `p`.`name`, `p`.`description` FROM `groups_map` AS `gp`
 			INNER JOIN `groups` AS `g` ON `gp`.`group_id` = `g`.`id`
 			INNER JOIN `projects` AS `p` ON `g`.`project_id` = `p`.`id`
-			WHERE `user_id` = $kid_id");
+			WHERE `user_id` = $kid_id GROUP BY `p`.`id`");
 		$result = $mysqli->loadObjectsList();
 
 		$mysqli->close();
