@@ -13,7 +13,7 @@
 	}
 	$user_id = $user->id;
 	$model_projects = getModel('projects');
-	$items = $model_projects->getData("`id` = $proj_id AND `creator_id` = $user_id");
+	$items = $model_projects->getData("`id` = $proj_id");
 	if (empty($items)) {
 		throw new Exception('Project not found', 500);
 	}

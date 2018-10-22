@@ -35,6 +35,9 @@ class ModelTasks
 	public function addNewTask($project_id, $name, $description, $data) {
 		$mysqli = db_connect();
 
+		$name = $mysqli->real_escape_string($name);
+		$description = $mysqli->real_escape_string($description);
+
 		$mysqli->real_query("INSERT INTO `tasks` (`name`, `description`, `project_id`) VALUES ('$name', '$description', $project_id)");
 		$task_id = $mysqli->insert_id;
 
@@ -59,6 +62,21 @@ class ModelTasks
 		$mysqli->close();
 
 		return $task_id;
+	}
+
+	public function getTasksByKid($proj_id, $user_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("SELECT `t`.`id`, `t`.`name`, `t`.`description` FROM `tasks` AS `t`
+			INNER JOIN `tasks_map` AS `tm` ON `t`.`id` = `tm`.`task_id`
+			INNER JOIN `groups_map` AS `gm` ON `tm`.`group_id` = `gm`.`group_id`
+			WHERE `t`.`project_id` = $proj_id AND `gm`.`user_id` = $user_id
+			GROUP BY `t`.`id`");
+		$result = $mysqli->loadObjectsList();
+
+		$mysqli->close();
+
+		return $result;
 	}
 
 }

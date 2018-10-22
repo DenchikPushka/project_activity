@@ -107,7 +107,7 @@
 		        data: {
 		            data: JSON.stringify(data),
 		            name: document.getElementById('task_name').value,
-		            description: document.getElementById('task_description').innerHTML,
+		            description: document.getElementById('task_description').value,
 		            project_id: <?= $proj_id; ?>
 		        },
 		        success: function(data) {
