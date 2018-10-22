@@ -67,7 +67,7 @@ class ModelTasks
 	public function getTasksByKid($proj_id, $user_id) {
 		$mysqli = db_connect();
 
-		$mysqli->real_query("SELECT `t`.`id`, `t`.`name`, `t`.`description` FROM `tasks` AS `t`
+		$mysqli->real_query("SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`closed` FROM `tasks` AS `t`
 			INNER JOIN `tasks_map` AS `tm` ON `t`.`id` = `tm`.`task_id`
 			INNER JOIN `groups_map` AS `gm` ON `tm`.`group_id` = `gm`.`group_id`
 			WHERE `t`.`project_id` = $proj_id AND `gm`.`user_id` = $user_id

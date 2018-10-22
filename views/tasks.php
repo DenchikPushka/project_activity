@@ -28,6 +28,11 @@
 	$model_groups = getModel('groups');
 	$groups = $model_groups->getData("`project_id` = $proj_id");
 ?>
+<style type="text/css">
+	.table>tbody>tr>td, .table>tbody>tr>th {
+		vertical-align: middle;
+	}
+</style>
 <div class="container">
 	<div class="modal_container">
 		<div class="modal_window">
@@ -46,11 +51,23 @@
 	<h3>Задания <button class="btn btn-success" id="btn_add_task">Создать задание <i class="fas fa-plus"></i></button></h3>
 	<table class="table table-hover">
 		<tbody>
-		<?php foreach ($tasks as $task) { ?>
-			<tr class="tr_task" data-task_id="<?= $task->id ?>"><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th><textarea class="form-control" style="resize: none; cursor: pointer; background: white;" readonly><?= $task->description; ?></textarea></th></tr>
+		<?php foreach ($tasks as $task) {
+			$tr_style = '';
+			if ($task->closed) {
+				$tr_style = 'style="background: rgba(149, 195, 97, 0.6);"';
+			}
+		?>
+			<tr class="tr_task" data-task_id="<?= $task->id; ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th><textarea class="form-control" style="resize: none; cursor: pointer; background: white;" readonly><?= $task->description; ?></textarea></th><th style="text-align: right;">
+				<?php if (!$task->closed) { ?>
+				<button class="btn btn-success btn_task_ready">Выполнено <i class="fas fa-check"></i></button>
+				<?php } else {
+					echo '<i class="fas fa-check"></i>';
+					}
+				 ?>
+			</th></tr>
 			<?php foreach ($groups_of_tasks as $item) {
 					if ($item->task_id == $task->id) { ?>
-						<tr class="tr_groups_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="2"><?= $item->group_name; ?></td></tr>
+						<tr class="tr_groups_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="3"><?= $item->group_name; ?></td></tr>
 				<?php }
 				}
 			}

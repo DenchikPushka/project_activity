@@ -29,11 +29,21 @@
 	<h3>Задания <a href="index.php?view=database&id=<?= $project->id ?>" class="btn btn-success">Перейти к таблицам <i class="fas fa-database"></i></a></h3>
 	<table class="table table-hover">
 		<tbody>
-		<?php foreach ($tasks as $task) { ?>
-			<tr class="tr_task" data-task_id="<?= $task->id ?>"><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th></tr>
-			<?php if (!empty($task->description)) { ?>
-					<tr class="tr_descriptions_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td><?= $task->description; ?></td></tr>
-			<?php }
+		<?php foreach ($tasks as $task) {
+			if ($task->closed) {
+				$tr_style = 'style="background: rgba(149, 195, 97, 0.6);"';
+			} else {
+				$tr_style = 'style="background: rgba(240, 173, 78, 0.8);"';
+			}
+			if (!empty($task->description)) {
+				$description = $task->description;
+			} else {
+				$description = 'Описание отсутствует';
+			}
+		?>
+			<tr class="tr_task" data-task_id="<?= $task->id ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th></tr>
+			<tr class="tr_descriptions_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td><?= $description; ?></td></tr>
+		<?php
 			}
 		?>
 		</tbody>
