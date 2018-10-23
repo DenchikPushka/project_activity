@@ -34,6 +34,9 @@
 	$db_table = $model_database->getDataFromTable($table_id);
 ?>
 <style type="text/css">
+	.tr_data>td {
+		vertical-align: middle;
+	}
 	table {
         border-collapse: collapse;
         border: 1px solid black;
@@ -83,7 +86,7 @@
 		</thead>
 		<tbody>
 			<?php foreach ($db_table as $key => $entity) {
-				echo "<tr data-entity_id=\"$key\">";
+				echo "<tr class=\"tr_data\" data-entity_id=\"$key\">";
 				foreach ($attributes as $attr) {
 					$attr_key = $attr->id;
 					if (array_key_exists($attr_key, $entity)) {
@@ -91,7 +94,7 @@
 							$file = explode('|', $entity[$attr_key]);
 							echo "<td><a href=\"uploads/$file[0]\" download=\"$file[1]\">$file[1]</a></td>";
 						} elseif ($attr->type_id == 3) {
-							echo "<td><textarea class=\"form-control\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$entity[$attr_key]</textarea></td>";
+							echo "<td><textarea class=\"form-control area_openable\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$entity[$attr_key]</textarea></td>";
 						} else {
 							echo "<td>$entity[$attr_key]</td>";
 						}

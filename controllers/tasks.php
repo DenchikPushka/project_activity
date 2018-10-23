@@ -19,5 +19,35 @@ class ControllerTasks
 			throw new Exception("Empty input data", 500);
 		}
 	}
+
+	function closeTask() {
+		$user = getUser();
+		if (empty($user) || $user->user_type != 2) {
+			throw new Exception("Forbidden", 403);
+		}
+		if (!empty($_POST['id'])) {
+			$id = mb_ereg_replace('[^\d]', '', $_POST['id']);
+			$model_tasks = getModel('tasks');
+			$model_tasks->closeTask($id);
+			die(json_encode(true));
+		} else {
+			throw new Exception("Empty input data", 500);
+		}
+	}
+
+	function openTask() {
+		$user = getUser();
+		if (empty($user) || $user->user_type != 2) {
+			throw new Exception("Forbidden", 403);
+		}
+		if (!empty($_POST['id'])) {
+			$id = mb_ereg_replace('[^\d]', '', $_POST['id']);
+			$model_tasks = getModel('tasks');
+			$model_tasks->openTask($id);
+			die(json_encode(true));
+		} else {
+			throw new Exception("Empty input data", 500);
+		}
+	}
 }
 ?>

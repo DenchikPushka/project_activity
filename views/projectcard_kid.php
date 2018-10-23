@@ -32,8 +32,10 @@
 		<?php foreach ($tasks as $task) {
 			if ($task->closed) {
 				$tr_style = 'style="background: rgba(149, 195, 97, 0.6);"';
+				$status = '<i class="fas fa-check"></i> Выполнено';
 			} else {
 				$tr_style = 'style="background: rgba(240, 173, 78, 0.8);"';
+				$status = 'В работе';
 			}
 			if (!empty($task->description)) {
 				$description = $task->description;
@@ -41,8 +43,8 @@
 				$description = 'Описание отсутствует';
 			}
 		?>
-			<tr class="tr_task" data-task_id="<?= $task->id ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th></tr>
-			<tr class="tr_descriptions_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td><?= $description; ?></td></tr>
+			<tr class="tr_task" data-task_id="<?= $task->id ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th style="text-align: right;"><?= $status; ?></th></tr>
+			<tr class="tr_descriptions_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="2"><pre><?= $description; ?></pre></td></tr>
 		<?php
 			}
 		?>

@@ -59,7 +59,8 @@ catch(Exception $e) {
 	<?php
 		$user = getUser();
 		if (!empty($user)) {
-			echo '<div style="float: right;">'.$user->username.' <a class="btn btn-primary" href="index.php?task=users.exitUser">Выйти</a></div>';
+			echo '<div style="float: left;"><button class="btn btn-primary" id="btn_back"><i class="fas fa-arrow-left"></i> Назад</button></div>';
+			echo '<div style="float: right;">'.$user->username.' <a class="btn btn-primary" href="index.php?task=users.exitUser">Выйти <i class="fas fa-sign-out-alt"></i></a></div>';
 		}
 	?>
 	</header>
@@ -111,6 +112,21 @@ catch(Exception $e) {
 
 		jQuery('.modal_window').mouseup(function() {
 			return false;
+		});
+
+		jQuery('.area_openable').click(function() {
+			jQuery('.modal_window')[0].innerHTML = '<textarea class="form-control" style="width: 400px; height: 400px; resize: none; background: white;" readonly>'+this.value+'</textarea>';
+			jQuery('.modal_container').show();
+			return false;
+		});
+
+		const reg_url1 = /view=projects_teacher/, reg_url2 = /view=projects_kid/;
+		if (reg_url1.test(location.href) || reg_url2.test(location.href)) {
+			jQuery('#btn_back').hide();
+		}
+
+		jQuery('#btn_back').click(function() {
+			history.back();
 		});
 	});
 </script>

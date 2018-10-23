@@ -79,5 +79,25 @@ class ModelTasks
 		return $result;
 	}
 
+	public function closeTask($id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("UPDATE `tasks` SET `closed` = 1 WHERE `id` = $id");
+
+		$mysqli->close();
+
+		return true;
+	}
+
+	public function openTask($id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("UPDATE `tasks` SET `closed` = 0 WHERE `id` = $id");
+
+		$mysqli->close();
+
+		return true;
+	}
+
 }
 ?>

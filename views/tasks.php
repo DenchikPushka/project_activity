@@ -57,13 +57,12 @@
 				$tr_style = 'style="background: rgba(149, 195, 97, 0.6);"';
 			}
 		?>
-			<tr class="tr_task" data-task_id="<?= $task->id; ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th><textarea class="form-control" style="resize: none; cursor: pointer; background: white;" readonly><?= $task->description; ?></textarea></th><th style="text-align: right;">
+			<tr class="tr_task" data-task_id="<?= $task->id; ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th><textarea class="form-control area_openable" style="resize: none; cursor: pointer; background: white;" readonly><?= $task->description; ?></textarea></th><th style="text-align: right;">
 				<?php if (!$task->closed) { ?>
-				<button class="btn btn-success btn_task_ready">Выполнено <i class="fas fa-check"></i></button>
-				<?php } else {
-					echo '<i class="fas fa-check"></i>';
-					}
-				 ?>
+				<button class="btn btn-success btn_task_ready" data-task_id="<?= $task->id; ?>">Закрыть задачу <i class="fas fa-check"></i></button>
+				<?php } else { ?>
+				<button class="btn btn-primary btn_task_open" data-task_id="<?= $task->id; ?>">Открыть задачу <i class="fas fa-undo"></i></button>
+				<?php } ?>
 			</th></tr>
 			<?php foreach ($groups_of_tasks as $item) {
 					if ($item->task_id == $task->id) { ?>
@@ -77,24 +76,86 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+		const ADD_TASK_CONT = jQuery('.modal_window')[0].innerHTML;
+
 		var elem_add_task = document.getElementById('btn_add_task');
 		if (elem_add_task) {
 			elem_add_task.onclick = function() {
+				jQuery('.modal_window')[0].innerHTML = ADD_TASK_CONT;
+
+				var elem_save_task = document.getElementById('btn_save_task');
+				if (elem_save_task) {
+					elem_save_task.onclick = saveTask;
+				}
+
+				var elem_cancel_task = document.getElementById('btn_cancel_task');
+				if (elem_cancel_task) {
+					elem_cancel_task.onclick = function() {
+						jQuery('.modal_container').hide();
+					};
+				}
+
 				jQuery('.modal_container').show();
 			};
 		}
 
-		var elem_save_task = document.getElementById('btn_save_task');
-		if (elem_save_task) {
-			elem_save_task.onclick = saveTask;
-		}
+		jQuery('.btn_task_ready').click(function() {
+			task_id = this.getAttribute('data-task_id')-0;
+			jQuery.ajax({
+		        type: 'POST',
+		        url: 'index.php?task=tasks.closeTask',
+		        data: {
+		            id: task_id
+		        },
+		        success: function(data) {
+		        	location.reload();
+		        },
+		        dataType: 'json',
+		        async: true,
+		        timeout: 10000,
+		        error: function(data) {
+		        	console.log(data);
+		            noty({
+		                timeout: 2000,
+		                theme: 'relax',
+		                layout: 'topCenter',
+		                maxVisible: 5,
+		                type: 'error',
+		                text: 'Ошибка!'
+		            });
+		        }
+		    });
+		    return false;
+		});
 
-		var elem_cancel_task = document.getElementById('btn_cancel_task');
-		if (elem_cancel_task) {
-			elem_cancel_task.onclick = function() {
-				jQuery('.modal_container').hide();
-			};
-		}
+		jQuery('.btn_task_open').click(function() {
+			task_id = this.getAttribute('data-task_id')-0;
+			jQuery.ajax({
+		        type: 'POST',
+		        url: 'index.php?task=tasks.openTask',
+		        data: {
+		            id: task_id
+		        },
+		        success: function(data) {
+		        	location.reload();
+		        },
+		        dataType: 'json',
+		        async: true,
+		        timeout: 10000,
+		        error: function(data) {
+		        	console.log(data);
+		            noty({
+		                timeout: 2000,
+		                theme: 'relax',
+		                layout: 'topCenter',
+		                maxVisible: 5,
+		                type: 'error',
+		                text: 'Ошибка!'
+		            });
+		        }
+		    });
+		    return false;
+		});
 
 		function saveTask() {
 			if (document.getElementById('task_name').value.trim() === '') {
@@ -117,7 +178,7 @@
 					data.push(groups_check[i].getAttribute('data-group_id')-0);
 				}
 			}
-			console.log(data);
+			//console.log(data);
 			jQuery.ajax({
 		        type: 'POST',
 		        url: 'index.php?task=tasks.addNewTask',
