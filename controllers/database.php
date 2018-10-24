@@ -2,6 +2,10 @@
 class ControllerDatabase
 {
 	function addNewTable() {
+		$user = getUser();
+		if (empty($user) || $user->user_type != 2) {
+			throw new Exception("Forbidden", 403);
+		}
 		if (!empty($_POST['project_id']) && !empty($_POST['name']) && !empty($_POST['data'])) {
 			$data = json_decode($_POST['data']);
 			$project_id = mb_ereg_replace('[^\d]', '', $_POST['project_id']);
@@ -17,6 +21,10 @@ class ControllerDatabase
 	}
 
 	function addEntity() {
+		$user = getUser();
+		if (empty($user)) {
+			throw new Exception("Forbidden", 403);
+		}
 		if (!empty($_POST['table_id']) && !empty($_POST['data'])) {
 			$table_id = mb_ereg_replace('[^\d]', '', $_POST['table_id']);
 			$data = json_decode($_POST['data']);

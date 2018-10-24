@@ -32,5 +32,19 @@ class ModelProjects
 		return $result;
 	}
 
+	public function addNewProject($name, $description, $creator_id) {
+		$mysqli = db_connect();
+
+		$name = $mysqli->real_escape_string($name);
+		$description = $mysqli->real_escape_string($description);
+
+		$mysqli->real_query("INSERT INTO `projects` (`name`, `description`, `creator_id`) VALUES ('$name', '$description', $creator_id)");
+		$project_id = $mysqli->insert_id;
+
+		$mysqli->close();
+
+		return $project_id;
+	}
+
 }
 ?>
