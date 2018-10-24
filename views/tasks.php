@@ -49,7 +49,8 @@
 	</div>
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3>Задания <button class="btn btn-success" id="btn_add_task">Создать задание <i class="fas fa-plus"></i></button></h3>
-	<table class="table table-hover">
+	<?php if (!empty($tasks)) { ?>
+		<table class="table table-hover">
 		<tbody>
 		<?php foreach ($tasks as $task) {
 			$tr_style = '';
@@ -72,7 +73,10 @@
 			}
 		?>
 		</tbody>
-	</table>
+		</table>
+	<?php } else {
+		echo '<p>Задания не добавлены</p>';
+	} ?>
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {

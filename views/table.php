@@ -47,7 +47,7 @@
     td, th {
     	padding: 5px 10px;
         display: inline-block;
-        width: calc(<?= (int)(100/(count($attributes))); ?>% - <?= (int)(60/(count($attributes))); ?>px);
+        width: calc(<?= (int)(100/(count($attributes))); ?>% - <?= (int)(64/(count($attributes))); ?>px);
         vertical-align: top;
     }
     td {
@@ -81,7 +81,7 @@
 				<?php foreach ($attributes as $attr) {
 					echo "<th>$attr->name</th>";
 				} ?>
-				<th></th>
+				<th style="width: 60px;"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -134,7 +134,7 @@
 					 		break;
 					}
 				} ?>
-				<th></th>
+				<th style="width: 60px;"></th>
 			</tr>
 			<tr><th><button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button></th></tr>
 		</tfoot>

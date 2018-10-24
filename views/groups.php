@@ -52,7 +52,8 @@
 	</div>
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3>Группы <button class="btn btn-success" id="btn_add_group">Создать группу <i class="fas fa-plus"></i></button></h3>
-	<table class="table table-hover">
+	<?php if (!empty($groups)) { ?>
+		<table class="table table-hover">
 		<tbody>
 		<?php foreach ($groups as $group) { ?>
 			<tr class="tr_group" data-group_id="<?= $group->id ?>"><th colspan="2"><?= $group->name; ?> <i class="fas fa-angle-right"></i></th></tr>
@@ -64,7 +65,10 @@
 			}
 		?>
 		</tbody>
-	</table>
+		</table>
+	<?php } else {
+		echo '<p>Группы не добавлены</p>';
+	} ?>
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {

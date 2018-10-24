@@ -10,7 +10,8 @@
 ?>
 <div class="container">
 	<center><h2>Проекты</h2></center>
-	<table class="table table-hover">
+	<?php if (!empty($items)) { ?>
+		<table class="table table-hover">
 		<thead>
 			<th>Название</th>
 			<th>Описание</th>
@@ -27,5 +28,8 @@
 			<tr class="tr_href" data-href="index.php?view=projectcard_teacher&id=<?= $item->id ?>"><td><?= $item->name; ?></td><td><?= $proj_description; ?></td></tr>
 		<?php } ?>
 		</tbody>
-	</table>
+		</table>
+	<?php } else {
+		echo '<p>Проекты не созданы</p>';
+	} ?>
 </div>

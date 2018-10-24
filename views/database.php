@@ -55,10 +55,8 @@
 		}
 	?>
 	</h3>
-	<?php
-		if (!empty($tables)) {
-	?>
-	<table class="table table-hover">
+	<?php if (!empty($tables)) { ?>
+		<table class="table table-hover">
 		<tbody>
 		<?php
 			foreach ($tables as $table) {
@@ -72,14 +70,10 @@
 			}
 		?>
 		</tbody>
-	</table>
-	<?php
-		} else {
-	?>
-		<p>На данный момент в текущем проекте нет таблиц</p>
-	<?php 
-		}
-	?>
+		</table>
+	<?php } else {
+		echo '<p>Таблицы не созданы</p>';
+	} ?>
 </div>
 <script type="text/javascript">
 	const ADD_TABLE_CONT = '<div class="row"><div class="col-md-6"><label for="table_name">Имя таблицы:</label><input class="form-control" id="table_name" type="text"></div><div class="col-md-6"></div></div><br><div style="height: 280px; overflow-y: scroll;"><table id="table_newtable"><tbody><tr><td>Имя колонки</td><td>Тип данных</td><td>Обязательно для заполнения?</td></tr><tr><td><input class="form-control col_name" type="text"></td><td><select class="form-control col_type"><?= $select_options; ?></select></td><td class="tdcenter"><input class="form-check-input col_notnull" type="checkbox"></td></tr></tbody></table></div><br><center><button class="btn btn-success" id="btn_add_str_attrib">Добавить атрибут <i class="fas fa-plus"></i></button></center><br><center><button class="btn btn-success" id="btn_save_table">Сохранить <i class="fas fa-save"></i></button> <button class="btn btn-danger" id="btn_cancel_table">Отменить <i class="fas fa-undo"></i></button></center>';

@@ -27,7 +27,8 @@
 <div class="container">
 	<center><h2><?= $project->name; ?></h2></center>
 	<h3>Задания <a href="index.php?view=database&id=<?= $project->id ?>" class="btn btn-success">Перейти к таблицам <i class="fas fa-database"></i></a></h3>
-	<table class="table table-hover">
+	<?php if (!empty($tasks)) { ?>
+		<table class="table table-hover">
 		<tbody>
 		<?php foreach ($tasks as $task) {
 			if ($task->closed) {
@@ -44,12 +45,15 @@
 			}
 		?>
 			<tr class="tr_task" data-task_id="<?= $task->id ?>" <?= $tr_style; ?>><th><?= $task->name; ?> <i class="fas fa-angle-right"></i></th><th style="text-align: right;"><?= $status; ?></th></tr>
-			<tr class="tr_descriptions_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="2"><pre><?= $description; ?></pre></td></tr>
+			<tr class="tr_descriptions_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="2"><pre style="max-width: 1124px; word-wrap: break-word; white-space: pre-wrap;"><?= $description; ?></pre></td></tr>
 		<?php
 			}
 		?>
 		</tbody>
-	</table>
+		</table>
+	<?php } else {
+		echo '<p>Задания не добавлены учителем</p>';
+	} ?>
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
