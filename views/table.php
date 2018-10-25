@@ -170,30 +170,50 @@
 
 		jQuery('.btn_delete_entity').click(function() {
 			var entity_id = this.getAttribute('data-entity_id');
-			jQuery.ajax({
-		        type: 'POST',
-		        url: 'index.php?task=database.deleteEntity',
-		        data: {
-		        	entity_id: entity_id
-		        },
-		        success: function(data) {
-		        	location.reload();
-		        },
-		        dataType: 'json',
-		        async: true,
-		        timeout: 10000,
-		        error: function(data) {
-		        	console.log(data);
-		            noty({
-		                timeout: 2000,
-		                theme: 'relax',
-		                layout: 'topCenter',
-		                maxVisible: 5,
-		                type: 'error',
-		                text: 'Ошибка!'
-		            });
-		        }
-		    });
+
+			noty({
+                theme: 'relax',
+                layout: 'topCenter',
+                type: 'default',
+                modal: true,
+                text: 'Вы действительно хотите удалить строку?',
+                killer: true,
+                buttons: [
+                    {
+                        addClass: 'btn btn-warning', text: 'Удалить', onClick: function($noty) {
+                            jQuery.ajax({
+						        type: 'POST',
+						        url: 'index.php?task=database.deleteEntity',
+						        data: {
+						        	entity_id: entity_id
+						        },
+						        success: function(data) {
+						        	location.reload();
+						        },
+						        dataType: 'json',
+						        async: true,
+						        timeout: 10000,
+						        error: function(data) {
+						        	console.log(data);
+						            noty({
+						                timeout: 2000,
+						                theme: 'relax',
+						                layout: 'topCenter',
+						                maxVisible: 5,
+						                type: 'error',
+						                text: 'Ошибка!'
+						            });
+						        }
+						    });
+                        }
+                    },
+                    {
+                        addClass: 'btn btn-primary', text: 'Отмена', onClick: function($noty) {
+                            $noty.close();
+                        }
+                    }
+                ]
+            });
 		});
 
 		jQuery('.db_file_button').click(function() {
