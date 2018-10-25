@@ -64,6 +64,7 @@
 				<?php } else { ?>
 				<button class="btn btn-primary btn_task_open" data-task_id="<?= $task->id; ?>">Открыть задачу <i class="fas fa-undo"></i></button>
 				<?php } ?>
+				<button class="btn btn-danger btn_delete_task" data-task_id="<?= $task->id; ?>" data-task_name="<?= trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $task->name)); ?>"><i class="fas fa-trash-alt"></i></button>
 			</th></tr>
 			<?php foreach ($groups_of_tasks as $item) {
 					if ($item->task_id == $task->id) { ?>
@@ -102,6 +103,56 @@
 				jQuery('.modal_container').show();
 			};
 		}
+
+		jQuery('.btn_delete_task').click(function() {
+			task_id = this.getAttribute('data-task_id');
+			task_name = this.getAttribute('data-task_name');
+
+			noty({
+                theme: 'relax',
+                layout: 'topCenter',
+                type: 'default',
+                modal: true,
+                text: 'Вы действительно хотите удалить задание "'+task_name+'"?',
+                killer: true,
+                buttons: [
+                    {
+                        addClass: 'btn btn-warning', text: 'Удалить', onClick: function($noty) {
+                            jQuery.ajax({
+						        type: 'POST',
+						        url: 'index.php?task=tasks.deleteTask',
+						        data: {
+						        	task_id: task_id
+						        },
+						        success: function(data) {
+						        	location.reload();
+						        },
+						        dataType: 'json',
+						        async: true,
+						        timeout: 10000,
+						        error: function(data) {
+						        	console.log(data);
+						            noty({
+						                timeout: 2000,
+						                theme: 'relax',
+						                layout: 'topCenter',
+						                maxVisible: 5,
+						                type: 'error',
+						                text: 'Ошибка!'
+						            });
+						        }
+						    });
+                        }
+                    },
+                    {
+                        addClass: 'btn btn-primary', text: 'Отмена', onClick: function($noty) {
+                            $noty.close();
+                        }
+                    }
+                ]
+            });
+			return false;
+		});
 
 		jQuery('.btn_task_ready').click(function() {
 			task_id = this.getAttribute('data-task_id')-0;

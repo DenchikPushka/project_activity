@@ -99,5 +99,15 @@ class ModelTasks
 		return true;
 	}
 
+	public function deleteTask($task_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("DELETE FROM `tasks` WHERE `id` = $task_id");
+
+		$mysqli->close();
+
+		return true;
+	}
+
 }
 ?>
