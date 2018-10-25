@@ -142,7 +142,17 @@ class ModelDatabase
 
 		$mysqli->close();
 
-		return $entity_id;
+		return true;
+	}
+
+	public function deleteTable($table_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("DELETE FROM `db_tables` WHERE `id` = $table_id");
+
+		$mysqli->close();
+
+		return true;
 	}
 
 }

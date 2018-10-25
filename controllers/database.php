@@ -111,5 +111,22 @@ class ControllerDatabase
 		}
 	}
 
+	function deleteTable() {
+		$user = getUser();
+		if (empty($user) || $user->user_type != 2) {
+			throw new Exception("Forbidden", 403);
+		}
+		if (!empty($_POST['table_id'])) {
+			$table_id = mb_ereg_replace('[^\d]', '', $_POST['table_id']);
+			
+			$model_database = getModel('database');
+			$model_database->deleteTable($table_id);
+
+			die(json_encode(true));
+		} else {
+			throw new Exception("Empty input data", 500);
+		}
+	}
+
 }
 ?>

@@ -63,7 +63,7 @@
 		?>
 			<tr class="tr_href" data-href="index.php?view=table&id=<?= $table->id; ?>"><th><?= $table->name; ?><th>
 				<?php if ($user->user_type == 2) { ?>
-				<th style="text-align: right;"><button class="btn btn-success btn_edit_table" data-table_id="<?= $table->id; ?>"><i class="fas fa-pen"></i></button></th>
+				<th style="text-align: right;"><button class="btn btn-danger btn_delete_table" data-table_id="<?= $table->id; ?>" data-table_name="<?= trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $table->name)); ?>"><i class="fas fa-trash-alt"></i></button></th>
 				<?php } ?>
 			</tr>
 		<?php 
@@ -77,7 +77,7 @@
 </div>
 <script type="text/javascript">
 	const ADD_TABLE_CONT = '<div class="row"><div class="col-md-6"><label for="table_name">Имя таблицы:</label><input class="form-control" id="table_name" type="text"></div><div class="col-md-6"></div></div><br><div style="height: 280px; overflow-y: scroll;"><table id="table_newtable"><tbody><tr><td>Имя колонки</td><td>Тип данных</td><td>Обязательно для заполнения?</td></tr><tr><td><input class="form-control col_name" type="text"></td><td><select class="form-control col_type"><?= $select_options; ?></select></td><td class="tdcenter"><input class="form-check-input col_notnull" type="checkbox"></td></tr></tbody></table></div><br><center><button class="btn btn-success" id="btn_add_str_attrib">Добавить атрибут <i class="fas fa-plus"></i></button></center><br><center><button class="btn btn-success" id="btn_save_table">Сохранить <i class="fas fa-save"></i></button> <button class="btn btn-danger" id="btn_cancel_table">Отменить <i class="fas fa-undo"></i></button></center>';
-	const EDIT_TABLE_CONT = '';
+
 	jQuery(document).ready(function() {
 
 		var elem_add_table = document.getElementById('btn_add_table');
@@ -114,10 +114,53 @@
 			};
 		}
 
-		jQuery('.btn_edit_table').click(function() {
-			console.log(this.getAttribute('data-table_id'));
-			jQuery('.modal_window')[0].innerHTML = EDIT_TABLE_CONT;
-			jQuery('.modal_container').show();
+		jQuery('.btn_delete_table').click(function() {
+			table_id = this.getAttribute('data-table_id');
+			table_name = this.getAttribute('data-table_name');
+
+			noty({
+                theme: 'relax',
+                layout: 'topCenter',
+                type: 'default',
+                modal: true,
+                text: 'Вы действительно хотите удалить таблицу "'+table_name+'"?',
+                killer: true,
+                buttons: [
+                    {
+                        addClass: 'btn btn-warning', text: 'Удалить', onClick: function($noty) {
+                            jQuery.ajax({
+						        type: 'POST',
+						        url: 'index.php?task=database.deleteTable',
+						        data: {
+						        	table_id: table_id
+						        },
+						        success: function(data) {
+						        	location.reload();
+						        },
+						        dataType: 'json',
+						        async: true,
+						        timeout: 10000,
+						        error: function(data) {
+						        	console.log(data);
+						            noty({
+						                timeout: 2000,
+						                theme: 'relax',
+						                layout: 'topCenter',
+						                maxVisible: 5,
+						                type: 'error',
+						                text: 'Ошибка!'
+						            });
+						        }
+						    });
+                        }
+                    },
+                    {
+                        addClass: 'btn btn-primary', text: 'Отмена', onClick: function($noty) {
+                            $noty.close();
+                        }
+                    }
+                ]
+            });
 			return false;
 		});
 
