@@ -12,6 +12,7 @@
 		throw new Exception('Invalid id', 500);
 	}
 	$user_id = $user->id;
+	$user_type = $user->user_type;
 
 	$model_database = getModel('database');
 	$tables = $model_database->getTables("`id` = $table_id");
@@ -89,20 +90,26 @@
 				echo "<tr class=\"tr_data\" data-entity_id=\"$key\">";
 				foreach ($attributes as $attr) {
 					$attr_key = $attr->id;
-					if (array_key_exists($attr_key, $entity)) {
+					if (array_key_exists($attr_key, $entity->attributes)) {
+						$val = $entity->attributes;
 						if ($attr->type_id == 5) {
-							$file = explode('|', $entity[$attr_key]);
+							$file = explode('|', $val[$attr_key]);
 							echo "<td><a href=\"uploads/$file[0]\" download=\"$file[1]\">$file[1]</a></td>";
 						} elseif ($attr->type_id == 3) {
-							echo "<td><textarea class=\"form-control area_openable\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$entity[$attr_key]</textarea></td>";
+							echo "<td><textarea class=\"form-control area_openable\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$val[$attr_key]</textarea></td>";
 						} else {
-							echo "<td>$entity[$attr_key]</td>";
+							echo "<td>$val[$attr_key]</td>";
 						}
 					} else {
 						echo '<td></td>';
 					}
 				}
-				echo "<td style=\"width: 60px; text-align: right;\"><button class=\"btn btn-danger btn_delete_entity\" data-entity_id=\"$key\"><i class=\"fas fa-trash-alt\"></i></button></td>";
+				if ($entity->creator_id == $user_id || $user_type == 2) {
+					echo "<td style=\"width: 60px; text-align: right;\"><button class=\"btn btn-danger btn_delete_entity\" data-entity_id=\"$key\"><i class=\"fas fa-trash-alt\"></i></button></td>";
+				} else {
+					echo "<td style=\"width: 60px; text-align: right;\"></td>";
+				}
+				
 				echo '</tr>';
 			} ?>
 		</tbody>
@@ -163,7 +170,30 @@
 
 		jQuery('.btn_delete_entity').click(function() {
 			var entity_id = this.getAttribute('data-entity_id');
-			console.log(entity_id);
+			jQuery.ajax({
+		        type: 'POST',
+		        url: 'index.php?task=database.deleteEntity',
+		        data: {
+		        	entity_id: entity_id
+		        },
+		        success: function(data) {
+		        	location.reload();
+		        },
+		        dataType: 'json',
+		        async: true,
+		        timeout: 10000,
+		        error: function(data) {
+		        	console.log(data);
+		            noty({
+		                timeout: 2000,
+		                theme: 'relax',
+		                layout: 'topCenter',
+		                maxVisible: 5,
+		                type: 'error',
+		                text: 'Ошибка!'
+		            });
+		        }
+		    });
 		});
 
 		jQuery('.db_file_button').click(function() {

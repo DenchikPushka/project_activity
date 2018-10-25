@@ -113,9 +113,10 @@ class ModelDatabase
 		}
 		$mysqli = db_connect();
 
-		$mysqli->real_query("SELECT `v`.*, `a`.`type_id` FROM `db_values` AS `v`
+		$mysqli->real_query("SELECT `v`.*, `a`.`type_id`, `e`.`creator_id` FROM `db_values` AS `v`
 			INNER JOIN `db_attributes` AS `a` ON `a`.`id` = `v`.`attribute_id`
 			INNER JOIN `db_tables` AS `t` ON `t`.`id` = `a`.`table_id`
+			INNER JOIN `db_entities` AS `e` ON `e`.`id` = `v`.`entity_id`
 			WHERE `t`.`id` = $table_id $filter ORDER BY `v`.`entity_id`");
 		$result = $mysqli->loadObjectsList();
 
@@ -123,10 +124,25 @@ class ModelDatabase
 
 		$result_array = array();
 		foreach ($result as $item) {
-			$result_array[$item->entity_id][$item->attribute_id] = $item->value;
+			if (!empty($result_array[$item->entity_id])) {
+				$result_array[$item->entity_id]->attributes[$item->attribute_id] = $item->value;
+			} else {
+				$result_array[$item->entity_id] = (object) array('attributes' => array($item->attribute_id => $item->value), 'creator_id' => $item->creator_id);
+			}
+			//$result_array[$item->entity_id][$item->attribute_id] = $item->value;
 		}
 
 		return $result_array;
+	}
+
+	public function deleteEntity($entity_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("DELETE FROM `db_entities` WHERE `id` = $entity_id");
+
+		$mysqli->close();
+
+		return $entity_id;
 	}
 
 }

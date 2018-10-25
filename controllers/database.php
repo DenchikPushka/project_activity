@@ -93,5 +93,23 @@ class ControllerDatabase
 			throw new Exception("Empty input data", 500);
 		}
 	}
+
+	function deleteEntity() {
+		$user = getUser();
+		if (empty($user)) {
+			throw new Exception("Forbidden", 403);
+		}
+		if (!empty($_POST['entity_id'])) {
+			$entity_id = mb_ereg_replace('[^\d]', '', $_POST['entity_id']);
+			
+			$model_database = getModel('database');
+			$model_database->deleteEntity($entity_id);
+
+			die(json_encode(true));
+		} else {
+			throw new Exception("Empty input data", 500);
+		}
+	}
+
 }
 ?>
