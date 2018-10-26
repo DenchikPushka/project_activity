@@ -63,5 +63,15 @@ class ModelGroups
 		return $group_id;
 	}
 
+	public function deleteGroup($group_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("DELETE FROM `groups` WHERE `id` = $group_id");
+
+		$mysqli->close();
+
+		return true;
+	}
+
 }
 ?>

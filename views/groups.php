@@ -56,7 +56,7 @@
 		<table class="table table-hover">
 		<tbody>
 		<?php foreach ($groups as $group) { ?>
-			<tr class="tr_group" data-group_id="<?= $group->id ?>"><th colspan="2"><?= $group->name; ?> <i class="fas fa-angle-right"></i></th></tr>
+			<tr class="tr_group" data-group_id="<?= $group->id ?>"><th><?= $group->name; ?> <i class="fas fa-angle-right"></i></th><th style="text-align: right;"><button class="btn btn-danger btn_delete_group" data-group_id="<?= $group->id; ?>" data-group_name="<?= trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $group->name)); ?>"><i class="fas fa-trash-alt"></i></button></th></tr>
 			<?php foreach ($users_of_groups as $item) {
 					if ($item->group_id == $group->id) { ?>
 						<tr class="tr_user_of_group" data-group_id="<?= $group->id ?>" style="display: none;"><td><?= $item->name; ?></td><td><?= $item->classname; ?></td></tr>
@@ -90,6 +90,56 @@
 				jQuery('.modal_container').hide();
 			};
 		}
+
+		jQuery('.btn_delete_group').click(function() {
+			group_id = this.getAttribute('data-group_id');
+			group_name = this.getAttribute('data-group_name');
+
+			noty({
+                theme: 'relax',
+                layout: 'topCenter',
+                type: 'default',
+                modal: true,
+                text: 'Вы действительно хотите удалить группу "'+group_name+'"?',
+                killer: true,
+                buttons: [
+                    {
+                        addClass: 'btn btn-warning', text: 'Удалить', onClick: function($noty) {
+                            jQuery.ajax({
+						        type: 'POST',
+						        url: 'index.php?task=groups.deleteGroup',
+						        data: {
+						        	group_id: group_id
+						        },
+						        success: function(data) {
+						        	location.reload();
+						        },
+						        dataType: 'json',
+						        async: true,
+						        timeout: 10000,
+						        error: function(data) {
+						        	console.log(data);
+						            noty({
+						                timeout: 2000,
+						                theme: 'relax',
+						                layout: 'topCenter',
+						                maxVisible: 5,
+						                type: 'error',
+						                text: 'Ошибка!'
+						            });
+						        }
+						    });
+                        }
+                    },
+                    {
+                        addClass: 'btn btn-primary', text: 'Отмена', onClick: function($noty) {
+                            $noty.close();
+                        }
+                    }
+                ]
+            });
+			return false;
+		});
 
 		function saveGroup() {
 			if (document.getElementById('group_name').value.trim() === '') {

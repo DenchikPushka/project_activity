@@ -19,5 +19,22 @@ class ControllerGroups
 			throw new Exception("Empty input data", 500);
 		}
 	}
+
+	function deleteGroup() {
+		$user = getUser();
+		if (empty($user) || $user->user_type != 2) {
+			throw new Exception("Forbidden", 403);
+		}
+		if (!empty($_POST['group_id'])) {
+			$group_id = mb_ereg_replace('[^\d]', '', $_POST['group_id']);
+			
+			$model_groups = getModel('groups');
+			$model_groups->deleteGroup($group_id);
+
+			die(json_encode(true));
+		} else {
+			throw new Exception("Empty input data", 500);
+		}
+	}
 }
 ?>
