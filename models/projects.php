@@ -46,5 +46,15 @@ class ModelProjects
 		return $project_id;
 	}
 
+	public function deleteProject($project_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("DELETE FROM `projects` WHERE `id` = $project_id");
+
+		$mysqli->close();
+
+		return true;
+	}
+
 }
 ?>

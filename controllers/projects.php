@@ -22,5 +22,22 @@ class ControllerProjects
 		}
 	}
 
+	function deleteProject() {
+		$user = getUser();
+		if (empty($user) || $user->user_type != 2) {
+			throw new Exception("Forbidden", 403);
+		}
+		if (!empty($_POST['project_id'])) {
+			$project_id = mb_ereg_replace('[^\d]', '', $_POST['project_id']);
+			
+			$model_projects = getModel('projects');
+			$model_projects->deleteProject($project_id);
+
+			die(json_encode(true));
+		} else {
+			throw new Exception("Empty input data", 500);
+		}
+	}
+
 }
 ?>

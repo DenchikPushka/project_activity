@@ -32,7 +32,7 @@
 		</thead>
 		<tbody>
 		<?php foreach ($items as $item) { ?>
-			<tr class="tr_href" data-href="index.php?view=projectcard_teacher&id=<?= $item->id ?>"><td><?= $item->name; ?></td><td><textarea class="form-control area_openable" style="resize: none; cursor: pointer; background: white;" readonly><?= $item->description; ?></textarea></td></tr>
+			<tr class="tr_href" data-href="index.php?view=projectcard_teacher&id=<?= $item->id ?>"><td><?= $item->name; ?></td><td><textarea class="form-control area_openable" style="resize: none; cursor: pointer; background: white;" readonly><?= $item->description; ?></textarea></td><th style="text-align: right;"><button class="btn btn-danger btn_delete_project" data-project_id="<?= $item->id; ?>" data-project_name="<?= trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $item->name)); ?>"><i class="fas fa-trash-alt"></i></button></th></tr>
 		<?php } ?>
 		</tbody>
 		</table>
@@ -65,6 +65,56 @@
 				jQuery('.modal_container').show();
 			};
 		}
+
+		jQuery('.btn_delete_project').click(function() {
+			project_id = this.getAttribute('data-project_id');
+			project_name = this.getAttribute('data-project_name');
+
+			noty({
+                theme: 'relax',
+                layout: 'topCenter',
+                type: 'default',
+                modal: true,
+                text: 'Вы действительно хотите удалить проект "'+project_name+'"?',
+                killer: true,
+                buttons: [
+                    {
+                        addClass: 'btn btn-warning', text: 'Удалить', onClick: function($noty) {
+                            jQuery.ajax({
+						        type: 'POST',
+						        url: 'index.php?task=projects.deleteProject',
+						        data: {
+						        	project_id: project_id
+						        },
+						        success: function(data) {
+						        	location.reload();
+						        },
+						        dataType: 'json',
+						        async: true,
+						        timeout: 10000,
+						        error: function(data) {
+						        	console.log(data);
+						            noty({
+						                timeout: 2000,
+						                theme: 'relax',
+						                layout: 'topCenter',
+						                maxVisible: 5,
+						                type: 'error',
+						                text: 'Ошибка!'
+						            });
+						        }
+						    });
+                        }
+                    },
+                    {
+                        addClass: 'btn btn-primary', text: 'Отмена', onClick: function($noty) {
+                            $noty.close();
+                        }
+                    }
+                ]
+            });
+			return false;
+		});
 
 		function saveProject() {
 			if (document.getElementById('project_name').value.trim() === '') {
