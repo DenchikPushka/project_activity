@@ -7,11 +7,9 @@
 			$result = $this->store_result();
 			if ($result === false) {
 				die($this->error);
-			}
-			elseif (empty($result)) {
+			} elseif (empty($result)) {
 				return null;
-			}
-			else {
+			} else {
 				return $result->fetch_object();
 			}
 		}
@@ -21,11 +19,9 @@
 			$result = $this->store_result();
 			if ($result === false) {
 				die($this->error);
-			}
-			elseif (empty($result)) {
+			} elseif (empty($result)) {
 				return array();
-			}
-			else {
+			} else {
 				$rows = array();
 				while ($row = $result->fetch_object()) {
 				 	$rows[] = $row;
@@ -53,12 +49,10 @@
 			    $model_name = 'Model'.$name;
 			    $instance = new $model_name();
 			    return $instance;
-			}
-			else {
+			} else {
 			    throw new Exception('Model not found', 500);
 			}
-		}
-		else {
+		} else {
 			throw new Exception('Invalid modelname', 500);
 		}
 	}

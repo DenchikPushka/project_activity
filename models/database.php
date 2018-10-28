@@ -78,7 +78,7 @@ class ModelDatabase
 	public function addEntity($table_id, $data, $user_id) {
 		$mysqli = db_connect();
 
-		$mysqli->real_query("INSERT INTO `db_entities` (`table_id`, `creator_id`) VALUES ($table_id, $user_id)");
+		$mysqli->real_query("INSERT INTO `db_entities` (`table_id`, `creator_id`, `create_time`) VALUES ($table_id, $user_id, NOW())");
 		$entity_id = $mysqli->insert_id;
 
 		$values = '';
@@ -153,6 +153,20 @@ class ModelDatabase
 		$mysqli->close();
 
 		return true;
+	}
+
+	public function getEntitiesHistory($project_id) {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("SELECT `u`.`name` AS `creator_name`, `e`.`create_time`, `t`.`name` AS `table_name` FROM `db_entities` AS `e`
+			INNER JOIN `db_tables` AS `t` ON `t`.`id` = `e`.`table_id`
+			INNER JOIN `users` AS `u` ON `u`.`id` = `e`.`creator_id`
+			WHERE `t`.`project_id` = $project_id ORDER BY `e`.`id` DESC");
+		$result = $mysqli->loadObjectsList();
+
+		$mysqli->close();
+
+		return $result;
 	}
 
 }

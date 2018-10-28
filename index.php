@@ -16,23 +16,19 @@ try {
 					$controller_name = 'Controller'.$class;
 					$instance = new $controller_name();
 					$instance->$func();
-				}
-				else {
+				} else {
 					throw new Exception('Controller not found', 500);
 				}
-			}
-			else {
+			} else {
 				require_once(DIR.'/controller.php');
 				$instance = new mainController();
 				if (method_exists($instance, $task)) {
 					$instance->$task();
-				}
-				else {
+				} else {
 					throw new Exception('Function not found', 500);
 				}
 			}
-		}
-		else {
+		} else {
 			throw new Exception('Invalid task', 500);
 		}
 	}
@@ -73,16 +69,13 @@ catch(Exception $e) {
 					$filename = "/views/$file.php";
 					if (file_exists(DIR.$filename)) {
 					    require_once(DIR.$filename);
-					}
-					else {
+					} else {
 					    throw new Exception('Страница не найдена', 404);
 					}
-				}
-				else {
+				} else {
 					throw new Exception('Недопустимое имя страницы', 500);
 				}
-			}
-			else {
+			} else {
 				require_once(DIR.'/views/main_page.php');
 			}
 		}

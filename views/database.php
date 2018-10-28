@@ -16,8 +16,7 @@
 	$items = $model_projects->getData("`id` = $proj_id");
 	if (empty($items)) {
 		throw new Exception('Project not found', 500);
-	}
-	else {
+	} else {
 		$project = $items[0];
 	}
 
@@ -61,7 +60,7 @@
 		<?php
 			foreach ($tables as $table) {
 		?>
-			<tr class="tr_href" data-href="index.php?view=table&id=<?= $table->id; ?>"><th><?= $table->name; ?><th>
+			<tr class="tr_href" data-href="index.php?view=table&id=<?= $table->id; ?>"><th><?= $table->name; ?></th>
 				<?php if ($user->user_type == 2) { ?>
 				<th style="text-align: right;"><button class="btn btn-danger btn_delete_table" data-table_id="<?= $table->id; ?>" data-table_name="<?= trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $table->name)); ?>"><i class="fas fa-trash-alt"></i></button></th>
 				<?php } ?>
