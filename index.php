@@ -113,6 +113,12 @@ catch(Exception $e) {
 			return false;
 		});
 
+		jQuery('.img_openable').click(function() {
+			jQuery('.modal_window')[0].innerHTML = '<img src="'+this.getAttribute('src')+'" style="max-height: 80vh;max-width: 80vw;"></img>';
+			jQuery('.modal_container').show();
+			return false;
+		});
+
 		const reg_url1 = /view=projects_teacher/, reg_url2 = /view=projects_kid/;
 		if (reg_url1.test(location.href) || reg_url2.test(location.href)) {
 			jQuery('#btn_back').hide();

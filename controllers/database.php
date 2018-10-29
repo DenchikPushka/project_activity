@@ -77,6 +77,9 @@ class ControllerDatabase
 								}
 							}
 							break;
+						case 6:
+							$data[$key]->value = (string)$item->value;
+							break;
 						default:
 							throw new Exception('Invalid data type', 500);
 							break;
