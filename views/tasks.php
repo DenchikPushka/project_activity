@@ -88,6 +88,19 @@
 			elem_add_task.onclick = function() {
 				jQuery('.modal_window')[0].innerHTML = ADD_TASK_CONT;
 
+				if (jQuery('.groups_check').length === 0) {
+					noty({
+		                timeout: 2000,
+		                theme: 'relax',
+		                layout: 'topCenter',
+		                maxVisible: 5,
+		                type: 'warning',
+		                text: 'Для создания заданий, необходимо создать группы'
+		            });
+		            jQuery('.modal_container').hide();
+		            return;
+				}
+
 				var elem_save_task = document.getElementById('btn_save_task');
 				if (elem_save_task) {
 					elem_save_task.onclick = saveTask;
