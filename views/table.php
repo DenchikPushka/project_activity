@@ -69,7 +69,7 @@
         border-top: 1px solid black;
     }
 </style>
-<div class="container">
+
 	<div class="modal_container">
 		<div class="modal_window">
 		</div>
@@ -151,7 +151,7 @@
 			<tr><th><button class="btn btn-success" id="btn_add_entity">Добавить строку <i class="fas fa-plus"></i></button></th></tr>
 		</tfoot>
 	</table>
-</div>
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		///////////////////////////////////////////////////////////

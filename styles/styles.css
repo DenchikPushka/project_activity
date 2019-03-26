@@ -56,7 +56,7 @@ header {
 	margin: 0px auto;
 	position: static;
 	display: block;
-	max-width: 1220px;
+	/*max-width: 1220px;*/
 	width: 100%;
 	min-height: calc(100vh - 160px);
 	background-color: White;
