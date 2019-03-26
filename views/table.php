@@ -98,7 +98,7 @@
 						} elseif ($attr->type_id == 3) {
 							echo "<td><textarea class=\"form-control area_openable\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$val[$attr_key]</textarea></td>";
 						} elseif ($attr->type_id == 6) {
-							echo "<td><img class=\"img_openable\" src=\"$val[$attr_key]\" style=\"max-height: 200px; max-width: 200px; cursor: pointer;\"></img></td>";
+							echo "<td><img class=\"img_openable\" src=\"$val[$attr_key]\" style=\"max-height: 80px; max-width: 80px; cursor: pointer;\"></img></td>";
 						} else {
 							echo "<td>$val[$attr_key]</td>";
 						}
@@ -120,29 +120,29 @@
 				<?php foreach ($attributes as $attr) {
 					$important = '';
 					if ($attr->not_null == 1) {
-						$important = '<label>(обязательное поле)</label>';
+						$important = '<label>*</label>';
 					}
 					switch ($attr->type_id) {
 						case 1:
-					 		echo "<th><label>Целое число:</label><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</th>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"><label>(Целое число)</label>$important</th>";
 					 		break;
 					 	case 2:
-					 		echo "<th><label>Строка:</label><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\">$important</th>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\"><label>(Строка)</label>$important</th>";
 					 		break;
 					 	case 3:
-					 		echo "<th><label>Текст:</label><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"resize: none;\"></textarea>$important</th>";
+					 		echo "<th><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"position: relative; bottom: 0px; z-index: 99;\"></textarea><label>(Текст)</label>$important</th>";
 					 		break;
 					 	case 4:
-					 		echo "<th><label>Число:</label><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\">$important</th>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"><label>(Число)</label>$important</th>";
 					 		break;
 					 	case 5:
-					 		echo "<th><label>Загрузить файл</label><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\">
+					 		echo "<th><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\">
 					 			<button class=\"btn btn-success db_file_button\" data-db_attr_id=\"$attr->id\"><i class=\"fas fa-upload\"></i></button>
 					 			<label class=\"db_file_label\" data-db_attr_id=\"$attr->id\"></label>
-					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\">$important</th>";
+					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\"><label>(Загрузить файл)</label>$important</th>";
 					 		break;
 					 	case 6:
-					 		echo "<th><label>Ссылка на картинку:</label><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\">$important</th>";
+					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\"><label>(Ссылка на картинку)</label>$important</th>";
 					 		break;
 					}
 				} ?>
