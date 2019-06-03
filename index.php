@@ -52,13 +52,27 @@ catch(Exception $e) {
 </head>
 <body>
 	<header>
-	<?php
-		$user = getUser();
-		if (!empty($user)) {
-			echo '<div style="float: left;"><button class="btn btn-primary" id="btn_back"><i class="fas fa-arrow-left"></i> Назад</button></div>';
-			echo '<div style="float: right;">'.$user->username.' <a class="btn btn-primary" href="index.php?task=users.exitUser">Выйти <i class="fas fa-sign-out-alt"></i></a></div>';
-		}
-	?>
+		<div class="row">
+			<div class="col-sm-4">
+				<?php
+					$page_title = '';
+					$user = getUser();
+					if (!empty($user)) {
+						echo '<div style="float: left;"><button class="btn btn-primary" id="btn_back"><i class="fas fa-arrow-left"></i> Назад</button></div>';
+					}
+				?>
+			</div>
+			<div class="col-sm-4" style="text-align: center;">
+				<label id="page_title" style="font-size: 26px;"></label>
+			</div>
+			<div class="col-sm-4">
+				<?php
+					if (!empty($user)) {
+						echo '<div style="float: right;">'.$user->username.' <a class="btn btn-primary" href="index.php?task=users.exitUser">Выйти <i class="fas fa-sign-out-alt"></i></a></div>';
+					}
+				?>
+			</div>
+		</div>
 	</header>
 	<div id="main_container">
 		<?php
@@ -108,8 +122,32 @@ catch(Exception $e) {
 		});
 
 		jQuery('.area_openable').click(function() {
-			jQuery('.modal_window')[0].innerHTML = '<textarea class="form-control" style="width: 400px; height: 400px; resize: none; background: white;" readonly>'+this.value+'</textarea>';
+			jQuery('.modal_window')[0].innerHTML = '<textarea class="form-control" style="min-width: 400px; height: 400px; width: 60vw; resize: none; background: white;" readonly>'+this.value+'</textarea>';
 			jQuery('.modal_container').show();
+			return false;
+		});
+
+		jQuery('.write_area_openable').click(function() {
+			jQuery('.modal_window')[0].innerHTML = '';
+			var area = document.createElement('textarea');
+			area.setAttribute('class', 'form-control');
+			area.style.minWidth = '400px';
+			area.style.width = '60vw';
+			area.style.height = '400px';
+			area.style.resize = 'none';
+			area.style.background = 'white';
+			area.readonly = true;
+			var text = document.createTextNode(this.value);
+			area.appendChild(text);
+			jQuery('.modal_window')[0].appendChild(area);
+			var input = this;
+
+			area.onchange = function() {
+				input.value = this.value;
+			};
+
+			jQuery('.modal_container').show();
+			area.focus();
 			return false;
 		});
 

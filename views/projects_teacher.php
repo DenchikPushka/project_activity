@@ -22,7 +22,6 @@
 				<button class="btn btn-danger" id="btn_cancel_project">Отменить <i class="fas fa-undo"></i></button></center>
 		</div>
 	</div>
-	<center><h2>Проекты</h2></center>
 	<button class="btn btn-success" id="btn_add_project" style="float: right;">Создать проект <i class="fas fa-plus"></i></button>
 	<?php if (!empty($items)) { ?>
 		<table class="table table-hover">
@@ -42,6 +41,9 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+
+		document.getElementById('page_title').innerHTML = 'Проекты';
+		
 		const ADD_PROJECT_CONT = jQuery('.modal_window')[0].innerHTML;
 
 		var elem_add_project = document.getElementById('btn_add_project');

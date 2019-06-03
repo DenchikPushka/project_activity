@@ -68,13 +68,16 @@
     tfoot {
         border-top: 1px solid black;
     }
+
+    .db_file_label {
+    	overflow: hidden;
+    }
 </style>
 
 	<div class="modal_container">
 		<div class="modal_window">
 		</div>
 	</div>
-	<center><h2><?= $project->name; ?></h2></center>
 	<h3><?= $table->name; ?></h3>
 	<table class="" style="width: 100%;">
 		<thead>
@@ -94,7 +97,9 @@
 						$val = $entity->attributes;
 						if ($attr->type_id == 5) {
 							$file = explode('|', $val[$attr_key]);
-							echo "<td><a href=\"uploads/$file[0]\" download=\"$file[1]\">$file[1]</a></td>";
+							echo "<td><a href=\"uploaded_files/$file[0]\" download=\"$file[1]\">$file[1]</a></td>";
+						} elseif ($attr->type_id == 7) {
+							echo "<td><img class=\"img_openable\" src=\"uploaded_files/$val[$attr_key]\" style=\"max-height: 80px; max-width: 80px; cursor: pointer;\"></img></td>";
 						} elseif ($attr->type_id == 3) {
 							echo "<td><textarea class=\"form-control area_openable\" style=\"cursor: pointer; background: #ffffff; resize: none;\" readonly>$val[$attr_key]</textarea></td>";
 						} elseif ($attr->type_id == 6) {
@@ -130,7 +135,7 @@
 					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\"><label>(Строка)</label>$important</th>";
 					 		break;
 					 	case 3:
-					 		echo "<th><textarea class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" style=\"position: relative; bottom: 0px; z-index: 99;\"></textarea><label>(Текст)</label>$important</th>";
+					 		echo "<th><textarea class=\"form-control db_attr_values write_area_openable\" data-db_attr_id=\"$attr->id\" style=\"position: relative; bottom: 0px; resize: none;\"></textarea><label>(Текст)</label>$important</th>";
 					 		break;
 					 	case 4:
 					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"number\"><label>(Число)</label>$important</th>";
@@ -144,6 +149,12 @@
 					 	case 6:
 					 		echo "<th><input class=\"form-control db_attr_values\" data-db_attr_id=\"$attr->id\" type=\"text\"><label>(Ссылка на картинку)</label>$important</th>";
 					 		break;
+					 	case 7:
+					 		echo "<th><input style=\"display: none;\" data-db_attr_id=\"$attr->id\" type=\"file\" accept=\"image/*\">
+					 			<button class=\"btn btn-success db_file_button\" data-db_attr_id=\"$attr->id\"><i class=\"fas fa-upload\"></i></button>
+					 			<label class=\"db_file_label\" data-db_attr_id=\"$attr->id\"></label>
+					 			<input class=\"db_attr_values db_file\" data-db_attr_id=\"$attr->id\" type=\"hidden\"><label>(Загрузить изображение)</label>$important</th>";
+					 		break;
 					}
 				} ?>
 				<th style="width: 60px;"></th>
@@ -154,6 +165,7 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+		document.getElementById('page_title').innerHTML = '<?= $project->name; ?>';
 		///////////////////////////////////////////////////////////
 		jQuery(window).resize(function() {
 			var $table = jQuery('table'),

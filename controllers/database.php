@@ -37,7 +37,7 @@ class ControllerDatabase
 			$files = array();
 			foreach ($_FILES as $file) {
 				$md5 = md5($user->id.microtime().$file['name'].rand(1, 10000));
-		        if (move_uploaded_file($file['tmp_name'], DIR.'/uploads/'.$md5)) {
+		        if (move_uploaded_file($file['tmp_name'], DIR.'/uploaded_files/'.$md5)) {
 		            $files[] = (object)array('name' => $file['name'], 'md5' => $md5);
 		        } else {
 		            throw new Exception('File not upload', 500);
@@ -79,6 +79,14 @@ class ControllerDatabase
 							break;
 						case 6:
 							$data[$key]->value = (string)$item->value;
+							break;
+						case 7:
+							foreach ($files as $file) {
+								if ($file->name == $value) {
+									$data[$key]->value = $file->md5;
+									break;
+								}
+							}
 							break;
 						default:
 							throw new Exception('Invalid data type', 500);

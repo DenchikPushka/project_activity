@@ -24,7 +24,6 @@
 	$entities = $model_database->getEntitiesHistory($proj_id);
 ?>
 <div class="container">
-	<center><h2><?= $project->name; ?></h2></center>
 	<h3>История</h3>
 	<p>(при удалении строки из таблицы, удаляется соответствующая запись из истории)</p>
 	<?php if (!empty($entities)) { ?>
@@ -39,3 +38,9 @@
 		echo '<p>Пусто</p>';
 	} ?>
 </div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		document.getElementById('page_title').innerHTML = '<?= $project->name; ?>';
+	});
+</script>

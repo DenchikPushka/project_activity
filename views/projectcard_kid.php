@@ -25,7 +25,6 @@
 	$tasks = $model_tasks->getTasksByKid($proj_id, $user_id);
 ?>
 <div class="container">
-	<center><h2><?= $project->name; ?></h2></center>
 	<h3>Задания <a href="index.php?view=database&id=<?= $project->id ?>" class="btn btn-success">Перейти к таблицам <i class="fas fa-database"></i></a></h3>
 	<?php if (!empty($tasks)) { ?>
 		<table class="table table-hover">
@@ -57,6 +56,8 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+
+		document.getElementById('page_title').innerHTML = '<?= $project->name; ?>';
 
 		jQuery('.tr_task').click(function() {
 			var task_id = this.getAttribute('data-task_id');

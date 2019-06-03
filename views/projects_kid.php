@@ -13,7 +13,6 @@
 		<div class="modal_window">
 		</div>
 	</div>
-	<center><h2>Проекты</h2></center>
 	<?php if (!empty($items)) { ?>
 		<table class="table table-hover">
 		<thead>
@@ -37,3 +36,9 @@
 		echo '<p>Нет доступных проектов</p>';
 	} ?>
 </div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		document.getElementById('page_title').innerHTML = 'Проекты';
+	});
+</script>

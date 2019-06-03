@@ -109,7 +109,7 @@ class ModelDatabase
 		if (empty($filter)) {
 			$filter = '';
 		} else {
-			$filter = 'WHERE '.$filter;
+			$filter = 'AND ('.$filter.')';
 		}
 		$mysqli = db_connect();
 

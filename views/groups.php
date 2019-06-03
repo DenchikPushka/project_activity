@@ -50,7 +50,6 @@
 				<button class="btn btn-danger" id="btn_cancel_group">Отменить <i class="fas fa-undo"></i></button></center>
 		</div>
 	</div>
-	<center><h2><?= $project->name; ?></h2></center>
 	<h3>Группы <button class="btn btn-success" id="btn_add_group">Создать группу <i class="fas fa-plus"></i></button></h3>
 	<?php if (!empty($groups)) { ?>
 		<table class="table table-hover">
@@ -72,6 +71,9 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+
+		document.getElementById('page_title').innerHTML = '<?= $project->name; ?>';
+		
 		var elem_add_group = document.getElementById('btn_add_group');
 		if (elem_add_group) {
 			elem_add_group.onclick = function() {

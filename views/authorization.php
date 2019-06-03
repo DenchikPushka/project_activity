@@ -19,7 +19,6 @@
 	}
 ?>
 <div class="container">
-	<center><h2>Авторизация</h2></center>
 	<div style="margin: 10px auto; width: 200px;">
 		<p>Логин*<br><input class="form-control" type="text" name="username" id="username" style="width: 100%;"></p>
 		<p>Пароль*<br><input class="form-control" type="password" name="password" id="password" style="width: 100%;"></p>
@@ -28,6 +27,9 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+
+		document.getElementById('page_title').innerHTML = 'Авторизация';
+
 		document.onkeydown = function(e) {
 			if (e.keyCode === 13) {
 				send_authorization();

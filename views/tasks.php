@@ -47,7 +47,6 @@
 				<button class="btn btn-danger" id="btn_cancel_task">Отменить <i class="fas fa-undo"></i></button></center>
 		</div>
 	</div>
-	<center><h2><?= $project->name; ?></h2></center>
 	<h3>Задания <button class="btn btn-success" id="btn_add_task">Создать задание <i class="fas fa-plus"></i></button></h3>
 	<?php if (!empty($tasks)) { ?>
 		<table class="table table-hover">
@@ -81,6 +80,9 @@
 </div>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+
+		document.getElementById('page_title').innerHTML = '<?= $project->name; ?>';
+
 		const ADD_TASK_CONT = jQuery('.modal_window')[0].innerHTML;
 
 		var elem_add_task = document.getElementById('btn_add_task');
