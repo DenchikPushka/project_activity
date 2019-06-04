@@ -21,10 +21,18 @@ class ModelProjects
 	public function getProjectsByKid($kid_id) {
 		$mysqli = db_connect();
 
-		$mysqli->real_query("SELECT `p`.`id`, `p`.`name`, `p`.`description` FROM `groups_map` AS `gp`
-			INNER JOIN `groups` AS `g` ON `gp`.`group_id` = `g`.`id`
-			INNER JOIN `projects` AS `p` ON `g`.`project_id` = `p`.`id`
-			WHERE `user_id` = $kid_id GROUP BY `p`.`id`");
+		$mysqli->real_query("
+			SELECT 	`p`.`id`,
+					`p`.`name`,
+					`p`.`description`
+			  FROM 	`groups_map` AS `gp`
+					INNER JOIN `groups` AS `g`
+						ON `gp`.`group_id` = `g`.`id`
+					INNER JOIN `projects` AS `p`
+						ON `g`.`project_id` = `p`.`id`
+			  WHERE `user_id` = $kid_id
+			  GROUP BY `p`.`id`
+		");
 		$result = $mysqli->loadObjectsList();
 
 		$mysqli->close();
@@ -38,7 +46,10 @@ class ModelProjects
 		$name = $mysqli->real_escape_string($name);
 		$description = $mysqli->real_escape_string($description);
 
-		$mysqli->real_query("INSERT INTO `projects` (`name`, `description`, `creator_id`) VALUES ('$name', '$description', $creator_id)");
+		$mysqli->real_query("
+			INSERT INTO `projects` (`name`, `description`, `creator_id`)
+			VALUES ('$name', '$description', $creator_id)
+		");
 		$project_id = $mysqli->insert_id;
 
 		$mysqli->close();

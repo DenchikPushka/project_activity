@@ -6,7 +6,13 @@ class ModelUsers
 
 		$password = md5($password);
 
-		$mysqli->real_query("SELECT `id`,`user_type` FROM `users` WHERE `username` = '$username' AND `password` = '$password'");
+		$mysqli->real_query("
+			SELECT 	`id`,
+					`user_type`
+			  FROM 	`users`
+			  WHERE `username` = '$username' AND
+			  		`password` = '$password'
+		");
 		$result = $mysqli->loadObject();
 
 		$mysqli->close();
@@ -23,7 +29,14 @@ class ModelUsers
 		}
 		$mysqli = db_connect();
 
-		$mysqli->real_query("SELECT `id`, `name`, `username`, `user_type` FROM `users` $filter");
+		$mysqli->real_query("
+			SELECT 	`id`,
+					`name`,
+					`username`,
+					`user_type`
+			  FROM 	`users`
+			  $filter
+		");
 		$result = $mysqli->loadObjectsList();
 
 		$mysqli->close();
@@ -34,10 +47,16 @@ class ModelUsers
 	public function getKids() {
 		$mysqli = db_connect();
 
-		$mysqli->real_query("SELECT `cm`.`user_id`, `u`.`name` AS `user_name`, `c`.`name` AS `class_name` FROM `classes_map` AS `cm`
-			INNER JOIN `users` AS `u` ON `cm`.`user_id` = `u`.`id`
-			INNER JOIN `classes` AS `c` ON `cm`.`class_id` = `c`.`id`
-			ORDER BY `c`.`name`, `u`.`name`");
+		$mysqli->real_query("
+			SELECT 	`u`.`id` AS `user_id`,
+					`u`.`name` AS `user_name`,
+					`c`.`name` AS `class_name`
+			  FROM 	`users` AS `u`
+					INNER JOIN `classes` AS `c`
+						ON `u`.`class_id` = `c`.`id`
+			  WHERE `u`.`user_type` = 1
+			  ORDER BY `c`.`name`, `u`.`name`
+		");
 		$result = $mysqli->loadObjectsList();
 
 		$mysqli->close();
