@@ -9,7 +9,7 @@
 				header('location: index.php?view=projects_teacher');
 				break;
 			case 3:
-				header('location: index.php?view=classes');
+				header('location: index.php?view=admin_page');
 				break;
 			default:
 				header('location: index.php?view=main_page');
@@ -92,7 +92,7 @@
 				            	location.href = 'index.php?view=projects_teacher';
 				            }
 				            else if (data.user_type == 3) {
-				            	location.href = 'index.php?view=main_page_3';
+				            	location.href = 'index.php?view=admin_page';
 				            }
 				            else {
 				            	location.href = 'index.php?view=main_page';

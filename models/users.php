@@ -64,5 +64,16 @@ class ModelUsers
 		return $result;
 	}
 
+	public function getClasses() {
+		$mysqli = db_connect();
+
+		$mysqli->real_query("SELECT * FROM `classes`");
+		$result = $mysqli->loadObjectsList();
+
+		$mysqli->close();
+
+		return $result;
+	}
+
 }
 ?>
