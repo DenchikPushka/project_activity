@@ -19,5 +19,5 @@
 	}
 ?>
 <div class="container">
-	<center><h2>Main page</h2><a class="btn btn-primary" href="index.php?view=authorization">Войти</a></center>
+	<center><h2>Добро пожаловать!</h2><a class="btn btn-primary" href="index.php?view=authorization">Войти в систему</a></center>
 </div>

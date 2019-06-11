@@ -99,14 +99,13 @@ catch(Exception $e) {
 		?>
 	</div>
 	<footer>
-		<div class="row">
-		  	<div class="col-xs-6 col-md-4"></div>
-		  	<div class="col-xs-6 col-md-4"></div>
-		  	<div class="col-xs-6 col-md-4"></div>
+		<div class="row" style="text-align: center; font-size: 18px;">
+		  	<div class="col-sm-4"><a href="index.php?view=help">Помощь</a></div>
+		  	<div class="col-sm-4"></div>
+		  	<div class="col-sm-4">Тел. +7 (999) 999-99-99</div>
 		</div>
 	</footer>
 </body>
-</html>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		jQuery('.tr_href').click(function() {
@@ -167,3 +166,4 @@ catch(Exception $e) {
 		});
 	});
 </script>
+</html>
