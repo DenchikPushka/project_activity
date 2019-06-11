@@ -8,7 +8,7 @@ class ControllerProjects
 		}
 		$creator_id = $user->id;
 		if (!empty($_POST['name'])) {
-			$name = trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $_POST['name']));
+			$name = trim(mb_ereg_replace('[\\\\\'\#\<\>\*]', '', $_POST['name']));
 			$description = null;
 			if (!empty($_POST['description'])) {
 				$description = trim($_POST['description']);

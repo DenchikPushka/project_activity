@@ -40,7 +40,7 @@
 			<label for="task_description">Описание:</label><textarea class="form-control" id="task_description" style="resize: none;"></textarea><br>
 			<div style="min-width: 280px; height: 260px; overflow-y: auto; padding: 10px 10px; border: 1px solid black; border-radius: 4px;">
 			<?php foreach ($groups as $group) { ?>
-				<input type="checkbox" class="form-check-input groups_check" data-group_id="<?= $group->id; ?>"> <label> <?= $group->name; ?></label><br>
+				<input type="checkbox" class="form-check-input groups_check" data-group_id="<?= $group->id; ?>"> <label>Группа "<?= $group->name; ?>"</label><br>
 			<?php } ?>
 			</div><br>
 			<center><button class="btn btn-success" id="btn_save_task">Сохранить <i class="fas fa-save"></i></button>
