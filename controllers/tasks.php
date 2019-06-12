@@ -9,7 +9,7 @@ class ControllerTasks
 		if (!empty($_POST['project_id']) && !empty($_POST['name']) && !empty($_POST['data'])) {
 			$data = json_decode($_POST['data']);
 			$project_id = mb_ereg_replace('[^\d]', '', $_POST['project_id']);
-			$name = trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s]', '', $_POST['name']));
+			$name = trim(mb_ereg_replace('[^A-Za-zА-ЯЁа-яё\d\_\s\"]', '', $_POST['name']));
 			$description = null;
 			if (!empty($_POST['description'])) {
 				$description = trim($_POST['description']);
