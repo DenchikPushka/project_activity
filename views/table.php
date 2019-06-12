@@ -67,6 +67,7 @@
     }
     tfoot {
         border-top: 1px solid black;
+        font-size: 14px;
     }
 
     .db_file_label {

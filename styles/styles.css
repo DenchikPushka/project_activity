@@ -2,6 +2,7 @@ body {
 	background-color: lightgray;
 	margin: 0px auto;
 	text-align: center;
+	font-size: 18px;
 }
 span {
 	cursor: default;
@@ -90,6 +91,7 @@ header {
     transform: translateX(-50%);
 	border-radius: 4px;
 	background: rgba(255, 255, 255, 255);
+	font-size: 14px;
 }
 h1, h2, h3 {
 	margin-top: 5px;

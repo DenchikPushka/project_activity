@@ -121,7 +121,7 @@ catch(Exception $e) {
 		});
 
 		jQuery('.area_openable').click(function() {
-			jQuery('.modal_window')[0].innerHTML = '<textarea class="form-control" style="min-width: 400px; height: 400px; width: 60vw; resize: none; background: white;" readonly>'+this.value+'</textarea>';
+			jQuery('.modal_window')[0].innerHTML = '<textarea class="form-control" style="min-width: 400px; height: 400px; width: 60vw; resize: none; background: white; font-size: 18px;" readonly>'+this.value+'</textarea>';
 			jQuery('.modal_container').show();
 			return false;
 		});
@@ -135,6 +135,7 @@ catch(Exception $e) {
 			area.style.height = '400px';
 			area.style.resize = 'none';
 			area.style.background = 'white';
+			area.style.fontSize = '18px';
 			area.readonly = true;
 			var text = document.createTextNode(this.value);
 			area.appendChild(text);
