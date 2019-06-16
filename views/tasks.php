@@ -67,7 +67,7 @@
 			</th></tr>
 			<?php foreach ($groups_of_tasks as $item) {
 					if ($item->task_id == $task->id) { ?>
-						<tr class="tr_groups_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="3"><?= $item->group_name; ?></td></tr>
+						<tr class="tr_groups_of_tasks" data-task_id="<?= $task->id ?>" style="display: none;"><td colspan="3">Группа "<?= $item->group_name; ?>"</td></tr>
 				<?php }
 				}
 			}
